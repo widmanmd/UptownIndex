@@ -6,7 +6,12 @@ Data for houses:
     Park Place 
     Schmattes
     Oxford Real Estate 
-    CKC Rentals  
+    CKC Rentals 
+        
+        Web scraping: Python / beautiful soup 
+
+        Need: Address, bedroom #, bathroom #, image?, features of house, company that owns the house, price   
+
 
 Concerns: 
     Copyright potential (house images) 
