@@ -1,13 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="../../styles/review.css"> 
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Rate my Rental</title>
 </head>
+
 <body>
-    <h1 style="text-align: center;">Rate my Rental</h1>
-    
+    <section id="header">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <a class="navbar-brand" href="#">Navbar</a>
+                  </nav>
+    </section>
+
+    <section id="form"> 
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Rate my Rental</h1>
+                    <br><br><br>
+                </div>
+            </div>
+
+            <form>
+                <div class="col-md-12">
+
+                    <div class="form-group">
+                        <label for="address" style="float: left";>Address</label>
+                        <input type="address" class="form-control" id="address" aria-describedby="emailHelp" placeholder="# and street name">
+                    </div>
+
+                    <div class="form-group">
+                            <label for="houseName" style="float: left";>House Name</label>
+                            <input type="houseName" class="form-control" id="houseName" aria-describedby="emailHelp" placeholder="Leave blank if none">
+                    </div>
+                    
+                    <br>
+                    <label style="float:left">Overall house rating:</label>
+                    <br><br>
+
+                    <div class="houseRating">
+
+                        <label class="radio-inline">
+                                <input type="radio" name="optradio" checked>1
+                        </label>
+
+                        <label class="radio-inline">
+                                <input type="radio" name="optradio">2
+                        </label>
+
+                        <label class="radio-inline">
+                                <input type="radio" name="optradio">3
+                        </label>
+                        <label class="radio-inline">
+                                <input type="radio" name="optradio">4
+                        </label>
+                        <label class="radio-inline">
+                                <input type="radio" name="optradio">5
+                        </label>
+
+                    </div> 
+
+                    <br><br>
+
+                    <div class="form-group">
+                            <label for="exampleFormControlTextarea1" style="float:left";>Feedback:</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    </div>
+
+                    <div class="submitButton">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+
+
+                </div>
+            </form>
+
+        </div>
+
+    </section>
+
+
 </body>
 </html>
 
