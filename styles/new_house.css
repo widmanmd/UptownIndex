@@ -1,3 +1,4 @@
+
 body {
     background-color: #7389AE; 
 }
@@ -6,11 +7,10 @@ body {
     text-align: center;
 }
 
-.yardRating {
+.houseRating {
 
     float:left;
 }
 
-h1 {
-    text-align: left;
-}
+
+
