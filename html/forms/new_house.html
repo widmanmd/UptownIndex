@@ -11,6 +11,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Add property</title>
+
+
+    
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var appendCount = 0;
+        $("input[type='radio']").click(function(){
+            var radioValue = $("input[name='AptSelection']:checked");
+            if(radioValue.length > 0){
+                if (radioValue.val() == "yes") {
+                    if (appendCount < 1) {
+                        $('.form-group3').show();
+                    }
+                    
+                }
+                else {
+                    $('.form-group3').hide();
+                    appendCount = 0;
+                }
+            }
+        });
+        
+    });
+</script>
+
 </head>
 
 <body>
@@ -41,47 +68,51 @@
                 <div class="col-md-12">
 
                     <div class="form-group">
-                        <label for="address" style="float: left";>Address</label>
+                        <label for="address" style="float: left";>Address:</label>
                         <input type="address" class="form-control" id="address" aria-describedby="emailHelp" placeholder="# and street name">
                     </div>
 
+
+                    <div class="form-group2">
+                        <label for="houseName" style="float: left";>Is the property an apartment? &nbsp;</label>
+                        <input type="radio" name="AptSelection" value="yes"> Yes
+                        <input type="radio" name="AptSelection" value="no"> No 
+                        <br>
+                    </div>
+                    <br>
+
+                    <div class="form-group3">
+                            <label for="address" style="float: left";>Apartment #:</label>
+                            <input type="address" class="form-control" id="aptNum" aria-describedby="emailHelp" placeholder="Unit #">
+                            <br>
+                    </div>
+
                     <div class="form-group">
-                            <label for="houseName" style="float: left";>House Name</label>
+                            <label for="houseName" style="float: left";>House Name:</label>
                             <input type="houseName" class="form-control" id="houseName" aria-describedby="emailHelp" placeholder="Leave blank if none">
                     </div>
-                    
-                    <br>
-                    <label style="float:left">Overall house rating:</label>
-                    <br><br>
-
-                    <div class="houseRating">
-
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio" checked>1
-                        </label>
-
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio">2
-                        </label>
-
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio">3
-                        </label>
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio">4
-                        </label>
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio">5
-                        </label>
-
-                    </div> 
-
-                    <br><br>
 
                     <div class="form-group">
-                            <label for="exampleFormControlTextarea1" style="float:left";>Feedback:</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        <label for="bedNum" style="float: left";># of Bedrooms:</label>
+                        <input type="houseName" class="form-control" id="houseName" aria-describedby="emailHelp" placeholder="Please enter a numerical value">
                     </div>
+
+                    <div class="form-group">
+                        <label for="bathNum" style="float: left";># of Bathrooms:</label>
+                        <input type="houseName" class="form-control" id="houseName" aria-describedby="emailHelp" placeholder="Please enter a numerical value">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tenNum" style="float: left";># of Tenants:</label>
+                        <input type="houseName" class="form-control" id="houseName" aria-describedby="emailHelp" placeholder="Please enter a numerical value">
+                    </div>
+            
+                    <div class="form-group">
+                            <label for="exampleFormControlTextarea1" style="float:left";>Description:</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Enter as much detail as you would like"></textarea>
+                    </div>
+                    <br><br><br><br>
+
 
                     <div class="submitButton">
                             <button type="submit" class="btn btn-primary">Submit</button>
