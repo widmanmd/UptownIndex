@@ -38,11 +38,21 @@
             </div>
 
             <form>
-                <div class="col-md-12">                    
-                    <label style="float:left">How would you rate the yard?</label>
+                
+
+                
+                <div class="col-md-12">      
+                        
+                        <div class="form-group">
+                                <label for="rent" style="float: left";>Semester rent price:</label>
+                                <input type="address" class="form-control" id="address" aria-describedby="emailHelp" placeholder="# value"
+                                input name="number" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                        </div>
+
+                    <label style="float:left">How would you rate the house maintenance / presentation?</label>
                     <br><br>
 
-                    <div class="yardRating">
+                    <div class="rating">
 
                         <label class="radio-inline">
                                 <input type="radio" name="optradio" checked>1
@@ -66,10 +76,10 @@
 
                     <br><br>
 
-                    <label style="float:left">How would you rate the location?</label>
+                    <label style="float:left">How would you rate the location / outdoor space?</label>
                     <br><br>
 
-                    <div class="yardRating">
+                    <div class="rating">
 
                         <label class="radio-inline">
                                 <input type="radio" name="optradio2" checked>1
@@ -93,83 +103,18 @@
 
                     <br><br>
 
-                    <label style="float:left">How would you rate the kitchen / dining area?</label>
+                    <label style="float:left">Would you recommend this property?</label>
                     <br><br>
 
-                    <div class="yardRating">
+                    <div class="rating">
 
                         <label class="radio-inline">
-                                <input type="radio" name="optradio3" checked>1
+                                <input type="radio" name="optradio3" checked>Yes
                         </label>
 
                         <label class="radio-inline">
-                                <input type="radio" name="optradio3">2
+                                <input type="radio" name="optradio3">No
                         </label>
-
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio3">3
-                        </label>
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio3">4
-                        </label>
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio3">5
-                        </label>
-
-                    </div> 
-
-                    <br><br>
-
-                    <label style="float:left">How would you rate the bedrooms?</label>
-                    <br><br>
-
-                    <div class="yardRating">
-
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio4" checked>1
-                        </label>
-
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio4">2
-                        </label>
-
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio4">3
-                        </label>
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio4">4
-                        </label>
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio4">5
-                        </label>
-
-                    </div> 
-
-                    <br><br>
-
-                    <label style="float:left">How would you rate the living room?</label>
-                    <br><br>
-
-                    <div class="yardRating">
-
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio5" checked>1
-                        </label>
-
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio5">2
-                        </label>
-
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio5">3
-                        </label>
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio5">4
-                        </label>
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio5">5
-                        </label>
-
                     </div> 
 
                     <br><br>
@@ -182,14 +127,16 @@
                     <div class="submitButton">
                             <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
+                </div> 
 
 
-                </div>
+
             </form>
 
         </div>
 
     </section>
+
 
     <br><br>
 
