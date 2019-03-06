@@ -10,6 +10,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <script src="../../jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../../ajaxTest.js"></script>  
+
+    <script type="text/javascript">
+
+	function getUrlVars() {
+    		var vars = {};
+    		var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+			vars[key] = value;
+			});
+    	return vars;
+		}
+	
+    $(document).ready(function(){
+		$("#reviewForm").submit(function(evt) {
+			evt.preventDefault();
+			
+			var id = getUrlVars()['id'];
+            var rentPrice = document.getElementById("price").value;
+            var rating1 = $("input[name='optradio']:checked").val();
+            var rating2 = $("input[name='optradio2']:checked").val();
+            var recommended = $("input[name='optradio3']:checked").val();
+            var description = document.getElementById("description").value;
+
+            postReview(id, rentPrice, rating1, rating2, recommended, description);
+		});
+		
+        <!-- $(".submitButton").on("click", function() { -->
+            <!-- //if (rentPrice == null || rating1 == null || || rating2 == null || recommend == null ) { -->
+                <!-- //alert("Please fill in required data"); -->
+           <!-- // } -->
+			<!-- var id = getURLVars()['id']; -->
+            <!-- var rentPrice = document.getElementById("price").value; -->
+            <!-- var rating1 = $("input[name='optradio']:checked").val(); -->
+            <!-- var rating2 = $("input[name='optradio2']:checked").val(); -->
+            <!-- var recommend = $("input[name='optradio3']:checked").val(); -->
+            <!-- var description = document.getElementById("description").value; -->
+
+            <!-- postReview(id, rentPrice, raing1, rating2, recommended, description); -->
+        <!-- }) -->
+        
+    });
+
+        
+    </script>
+
     <title>Review selected Property</title>
 </head>
 
@@ -32,21 +78,19 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h1>Leaving a Review for: </h1>
+                    <h1>Leave a Review! </h1>
                     <br>
                 </div>
             </div>
 
-            <form>
-                
-
+            <form method="post" onsubmit="" id="reviewForm">
                 
                 <div class="col-md-12">      
                         
                         <div class="form-group">
-                                <label for="rent" style="float: left";>Semester rent price:</label>
-                                <input type="address" class="form-control" id="address" aria-describedby="emailHelp" placeholder="# value"
-                                input name="number" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                            <label for="rent" style="float: left";>Semester rent price:</label>
+                            <input type="address" class="form-control" id="price" aria-describedby="emailHelp" placeholder="# value"
+                            input name="number" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
                         </div>
 
                     <label style="float:left">How would you rate the house maintenance / presentation?</label>
@@ -55,21 +99,21 @@
                     <div class="rating">
 
                         <label class="radio-inline">
-                                <input type="radio" name="optradio" checked>1
+                                <input type="radio" name="optradio" value="1">1
                         </label>
 
                         <label class="radio-inline">
-                                <input type="radio" name="optradio">2
+                                <input type="radio" name="optradio" value="2">2
                         </label>
 
                         <label class="radio-inline">
-                                <input type="radio" name="optradio">3
+                                <input type="radio" name="optradio" value="3">3
                         </label>
                         <label class="radio-inline">
-                                <input type="radio" name="optradio">4
+                                <input type="radio" name="optradio" value="4">4
                         </label>
                         <label class="radio-inline">
-                                <input type="radio" name="optradio">5
+                                <input type="radio" name="optradio" value="5">5
                         </label>
 
                     </div> 
@@ -82,21 +126,21 @@
                     <div class="rating">
 
                         <label class="radio-inline">
-                                <input type="radio" name="optradio2" checked>1
+                                <input type="radio" name="optradio2" value="1">1
                         </label>
 
                         <label class="radio-inline">
-                                <input type="radio" name="optradio2">2
+                                <input type="radio" name="optradio2" value="2">2
                         </label>
 
                         <label class="radio-inline">
-                                <input type="radio" name="optradio2">3
+                                <input type="radio" name="optradio2" value="3">3
                         </label>
                         <label class="radio-inline">
-                                <input type="radio" name="optradio2">4
+                                <input type="radio" name="optradio2" value="4">4
                         </label>
                         <label class="radio-inline">
-                                <input type="radio" name="optradio2">5
+                                <input type="radio" name="optradio2" value="5">5
                         </label>
 
                     </div> 
@@ -109,11 +153,11 @@
                     <div class="rating">
 
                         <label class="radio-inline">
-                                <input type="radio" name="optradio3" checked>Yes
+                                <input type="radio" name="optradio3" value="yes">Yes
                         </label>
 
                         <label class="radio-inline">
-                                <input type="radio" name="optradio3">No
+                                <input type="radio" name="optradio3" value="no">No
                         </label>
                     </div> 
 
@@ -121,11 +165,11 @@
 
                     <div class="form-group">
                             <label for="exampleFormControlTextarea1" style="float:left";>Comments about the property:</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <textarea class="form-control" id="description" rows="3"></textarea>
                     </div>
 
                     <div class="submitButton">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" value="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </div> 
 
