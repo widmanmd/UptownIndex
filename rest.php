@@ -67,19 +67,21 @@ if ($pathLength == 3) { //Means there are no parameters at the end of the path.
 			$occupancy = $body["occupancy"];
 			$apt_number = $body["apt_number"];
             
-            $output = addProperty($address, $description, $beds, $baths, null, 
+            $output = addProperty($address, $description, $beds, $baths, "unclaimed", 
 				"Oxford", "Ohio", "45056", $propertyType, $name, $occupancy, $apt_number);
 			/* $output = addProperty($address, $description, $beds, $baths, $managerName, 
 				$city, $state, $zipCode, $propertyType, $name, $occupancy, $apt_number); */
 			
 			//Dummy response
-            //file_put_contents("log2.txt", "sending response...");
+            //file_put_contents("log2.txt", "sending response... HELLO");
 			//$output = array('status'=>'OK','msg'=>'this is a dummy response for the insertNewProperty() method.');
 		} else {
 			//ERROR - INVALID METHOD
 			$output = invalidMethod();
 		}
-	} elseif ($version == "v1" && $call == "properties" && $param == "search") {
+	} 
+    
+    /* elseif ($version == "v1" && $call == "properties" && $param == "search") {
 		if ($method === "POST") {
 			//DATAMODEL API CALL : keywordSearch($body)
 			//$body = (array) getJson();
@@ -92,7 +94,9 @@ if ($pathLength == 3) { //Means there are no parameters at the end of the path.
 			//ERROR - INVALID METHOD
 			$output = invalidMethod();
 		}
-	} elseif ($version == "v1" && $call == "reviews" && $param == "add") {
+	}  */
+    
+    elseif ($version == "v1" && $call == "reviews" && $param == "add") {
 		if ($method === "POST") {
 			//DATAMODEL API CALL : insertNewReview($parameters from data)
 			$body = (array) getJson();
@@ -152,6 +156,13 @@ if ($pathLength == 3) { //Means there are no parameters at the end of the path.
 			//ERROR - INVALID METHOD
 			$output = invalidMethod();
 		}
+	} elseif($version == "v1" && $call == "properties" && $subCall == "search"){
+		if($method == "POST"){
+			$output = keywordSearch($param);
+		}else {
+			//ERROR - INVALID METHOD
+			$output = invalidMethod();
+		}
 	} else {
 		//ERROR - INVALID PATH
 		$output = invalidPath();
@@ -165,3 +176,4 @@ if ($pathLength == 3) { //Means there are no parameters at the end of the path.
 //RESPONSE
 header("content-type: application/json");
 print json_encode($output);
+file_put_contents("log.txt", json_last_error_msg());

@@ -34,6 +34,41 @@ function fetchProperties() {
 
 }
 
+function fetchByKey(key){
+    console.log("keyword=" + key);
+
+    $.ajax( {
+        url: HOST + "rest.php/v1/properties/search/" + key,
+        type: "POST",
+        dataType: "JSON",
+        success: function(result) {
+			console.log("success!");
+			fetchByKeySuccess(result);
+		},
+        failure: function(xhr) {
+			ajaxFailure(xhr);
+		}
+    });
+}
+
+function fetchPropertiesByCategory(cat) {
+
+    console.log("calling fetchPropertiesByCategory()...");
+
+    $.ajax( {
+        url: HOST + "rest.php/v1/properties/cat/" + cat,
+        type: "GET",
+        dataType: "JSON", 
+        success: function(result) {
+            console.log("AJAX Success");
+            fetchPropertiesSuccess(result);
+        }, 
+        failure: function(xhr) {
+            ajaxFailure(xhr);
+        }
+    });
+}
+
 /** fetchPropertyByID(id)
     AJAX call to fetch property information, given a propertyID. See REST-API-CALLS.txt for more
         information.
@@ -121,17 +156,16 @@ function postReview(id, rent, maintenance, location, recommended, comments) {
 	@param string description of property, must be fewer than 500 characters.
 */
 function postProperty(address, apt, aptNum, name, bedNum, bathNum, tenants, description) {
-    console.log("posting property... propertyType = " + apt);
     var obj = {address: address, name: name, description: description, occupancy: tenants, beds: bedNum, baths: bathNum, propertyType: apt, apt_number: aptNum};
     var objJSON = JSON.stringify(obj);
-
+    console.log("Posting Property...")
     $.ajax( {
         url: HOST + "rest.php/v1/properties/add",
         type: "POST",
         dataType: "JSON",
         data: objJSON,
         success: function(result) {
-            console.log("success");
+            console.log("Success! msg= " + result.msg);
             postPropertySuccess(result);
         },
         failure: function(xhr) {
@@ -165,13 +199,8 @@ function postReviewSuccess(result) {
 	@param result, associative array.
 */
 function postPropertySuccess(result) {
-    if(result.status == "OK") {
-		console.log("Property posted successfully"); 
-		alert("Property Successfully Posted!");
-	} else {
-		console.log("Error! status: " + result.status + ", msg: " + result.msg); 
-		alert("Error occurred. Check console.");
-	}
+    console.log("Property has been added");
+    alert("Property Successfully Added!");
 }
 
 /** fetchReviewsForPropertySuccess(result)
@@ -246,8 +275,10 @@ function fetchPropertiesSuccess(result) {
         for (i = 0; i < result.properties.length; i++) {
             $("#propertyTable").append(
                 $("<tbody/>")
-                    .html("<tr><td>" + result.properties[i].address + "</td><td>" +
-                     "<a href=\"" + HOST + "/html/forms/listing.html?id=" + result.properties[i].id + "\">Click Here!</a>"
+                    .html("<tr><td>" + "<a href=\"" + HOST + "/html/forms/listing.html?id=" + 
+                    result.properties[i].id + "\">" + result.properties[i].name + "</a>" + 
+                    "<br>" + result.properties[i].address + "</td><td>" +
+                     "Bedrooms: " + result.properties[i].beds + "<br>" + "Bathrooms: " + result.properties[i].baths
                     + "</td></tr>")
             );
         }
@@ -257,6 +288,26 @@ function fetchPropertiesSuccess(result) {
         alert("Unknown Error. Check console.");
     }
 
+}
+
+function fetchByKeySuccess(result){
+    console.log(result);
+    if (result.status == "OK") {
+            $(".countMessage").html("<h4>"+ result.count + 'results found.'+"</h4>");
+            $(".propertyDiv").append($("<table/>").attr("id", "propertyTable"));
+            $("#propertyTable").attr("class", "table table-striped");
+
+                for (i = 0; i < result.properties.length; i++) {
+                    $("#propertyTable").append($("<tbody/>")
+                    .html("<tr><td>" + result.properties[i].address + "</td><td>" +
+                     "<a href=\"" + HOST + "/html/forms/listing.html?id=" + result.properties[i].id + "\">Click Here!</a>"
+                    + "</td></tr>")
+                );
+            }
+        }else {
+        $(".countMessage").html("<h4>"+'No matching results found.'+"</h4>");
+        console.log("Status: " + result.status + ", Msg: " + result.msg);
+    }
 }
 
 /** ajaxFailure(xhr)

@@ -130,10 +130,12 @@ $city, $state, $zipCode, $propertyType, $name, $occupancy, $apt_number){
     if(!$stmt->execute()) {
         echo "FAILED TO INSERT PROPERTIES" . $stmt->error;
         $arr = array('status'=>'FAIL', 'msg'=>"FAILED TO INSERT PROPERTIES" . $stmt->error);
+        file_put_contents("log2.txt", "PostProperty Failure " . $stmt->error);
     }else{
         $status = 'OK';
 		$msg = 'SUCCESS';
 		$arr = array('status'=>$status, 'msg'=>$msg);
+        file_put_contents("log2.txt", "PostProperty Success");
     }
     $stmt->close();
     $conn->close();
@@ -164,11 +166,18 @@ function addReview($recommended, $rent, $maintenance, $neighborhood, $body, $pro
 
 // Search by properties name or address
 function keywordSearch($keyword){
-$conn = connectDB();
-    $sql = "SELECT * FROM property WHERE name LIKE ? OR address LIKE ?";
+    $conn = connectDB();
+
+    $keyword = strtoupper($keyword);    
+    $keyword = strip_tags($keyword);    
+    $keyword = trim($keyword); 
+
+    $sql = "SELECT * FROM property WHERE upper(name) LIKE ? OR upper(address) LIKE ?";
  
+    $temp = '%'.$keyword.'%';
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $keyword);
+    $stmt->bind_param("ss", $temp, $temp);
+    $arr = array();
 
     if(!$stmt->execute()) {
         echo "error executing query" . $stmt->error;
@@ -176,20 +185,24 @@ $conn = connectDB();
     }else{
         $stmt->bind_result($pk, $address, $description, $beds, $baths, $managerName, 
         $city, $state, $zipCode, $propertyType, $name, $occupancy, $apt_number);
-        $stmt->fetch();
-        if(isset($pk)) {
-            $status = 'OK';
-            $msg = 'SUCCESS';
-            $arr = array('status'=>$status, 'msg'=>$msg, 'address'=>$address, 
-            'description'=>$description,'beds'=>$beds,'baths'=>$baths,'managerName'=>$managerName,
-            'city'=>$city,'state'=>$state,'zipCode'=>$zipCode,'propertyType'=>$propertyType,
-            'name'=>$name,'occupancy'=>$occupancy,'apt_number'=>$apt_number);
-        } else {
+
+		$propertyList = array();
+        while($stmt->fetch()) {
+			$property = array('id'=>$pk, 'address'=>$address, 'beds'=>$beds, 'baths'=>$baths, 'manager'=>$managerName, 'city'=>$city, 'state'=>$state, 
+						'zip'=>$zipCode, 'propertyType'=>$propertyType, 'name'=>$name, 'occupancy'=>$occupancy, 'aptNumber'=>$apt_number);
+			array_push($propertyList, $property);
+        }
+    }
+
+        $anymatches= mysqli_stmt_num_rows($stmt);
+        if($anymatches == 0){
             $status = 'FAIL';
             $msg = 'PROPERTY NOT FOUND';
             $arr = array('status'=>$status, 'msg'=>$msg);
+        }else{
+            $arr = array('status'=>'OK', 'msg'=>'SUCCESS', 'count'=>$anymatches, 'properties'=>$propertyList);
         }
-    }
+ 
     $stmt->close();
     $conn->close();
     return $arr;

@@ -14,7 +14,9 @@
 
 
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script type="text/javascript" src="../../ajaxTest.js"></script>   
+<script type="text/javascript" src="../../js/ajaxTest.js"></script> 
+<script type="text/javascript" src="../../js/header.js"></script>   
+
 
 <script type="text/javascript">
     $(document).ready(function(){
@@ -36,12 +38,12 @@
             }
         });
 
-        $("#new_house").submit( function(evt) {
+        $("#newHouseForm").submit( function(evt) {
             //if (addressName == null || apt == null || || bednum == null || bathNum == null || tenants == null) {
                 //alert("Please fill in required data");
            // }
-            evt.preventDefault();
-            
+           evt.preventDefault();
+
             var addressName = document.getElementById("address").value;
             var apt = $("input[name='AptSelection']:checked").val();
             var aptNum = document.getElementById("aptNum").value;
@@ -53,7 +55,7 @@
 
             postProperty(addressName, apt, aptNum, name, bedNum, bathNum, tenants, desc);
 
-        })
+        });
         
     });
 </script>
@@ -61,18 +63,7 @@
 </head>
 
 <body>
-    <div class="header sticky" id="header">
-        <br>
-        <div class="container">
-            <div class="col-md-12" style="text-align: right">
-                <form class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Enter house name" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" style="color:black;" type="submit">Search</button>
-                </form>
-            </div>
-        </div>
-            
-    </div>
+    <div id="header"></div>
     <br><br><br>
 
     <section id="form"> 
@@ -84,7 +75,7 @@
                 </div>
             </div>
 
-            <form id="new_house">
+            <form method="post" onsubmit="" id="newHouseForm">
                 <div class="col-md-12">
 
                     <div class="form-group1">
@@ -94,8 +85,8 @@
 
                     <div class="form-group2">
                         <label for="houseName" style="float: left";>Is the property an apartment? &nbsp;</label>
-                        <input id="apt" type="radio" name="AptSelection" value="APARTMENT"> Yes
-                        <input id="house" type="radio" name="AptSelection" value="HOUSE"> No 
+                        <input type="radio" name="AptSelection" value="APARTMENT"> Yes
+                        <input type="radio" name="AptSelection" value="HOUSE"> No 
                         <br>
                     </div>
                     <br>
@@ -137,7 +128,7 @@
                     <br><br>
 
                     <div class="submitButton">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" value="submit" class="btn btn-primary">Submit</button>
                     </div>
 
                 </div>
