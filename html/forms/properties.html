@@ -16,14 +16,15 @@
 
 
     <script src="../../js/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="../../js/ajaxTest.js"></script>   
+    <script type="text/javascript" src="../../js/ajaxTest.js"></script>  
+    <script type="text/javascript" src="../../js/header.js"></script> 
 
     <script type="text/javascript">
-        $( document ).ready(function() {
-              fetchProperties();
-              
+        function getUrlVars() {
+        var vars = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
         });
-<<<<<<< HEAD
     return vars;
     }
     
@@ -42,30 +43,23 @@
             ajaxGet("properties.php/v2/all", fetchProperties); 
         }
     }); 
-=======
->>>>>>> 5fdeb903295ef72296bcbf1fa0da913974149ad6
     </script>
 
-    <title>Listing</title>
+    <title>Listings</title>
 
     
 </head>
 
 <body>
-
-        <div class="header sticky" id="header">
-                <div class="container">
-                    <div class="col-md-12" style="text-align: right">
-                        <form class="form-inline">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Enter house name" aria-label="Search">
-                            <button class="btn btn-outline-success my-2 my-sm-0" style="color:black;" type="submit">Search</button>
-                        </form>
-                    </div>
-                </div>  
-            </div>
-
-    <div class="propertyDiv">
-
+<div id="header"></div>
+    <div id = "wrap" style = "margin-top:74px;">
+        <div class = "countMessage"></div>
+        <div class="propertyDiv"></div>
     </div>
+    <div id="newProperty">
+        <p>Can't find a property? <a href="new_house.html">Click Here!</a></p>
+    </div>
+    
+<!-- <div id="footer"></div> -->
 </body>
 </html>
