@@ -15,49 +15,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <script src="../../js/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="../../js/ajaxTest.js"></script>  
-    <script type="text/javascript" src="../../js/header.js"></script> 
+    <script src="../../jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../../ajaxTest.js"></script>   
 
     <script type="text/javascript">
-        function getUrlVars() {
-        var vars = {};
-        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-        vars[key] = value;
+        $( document ).ready(function() {
+              fetchProperties();
+              
         });
-    return vars;
-    }
-    
-    var arr = getUrlVars();
-    var query = arr['query'];
-    var cat = arr['category'];
-    
-    $( document ).ready(function() {
-        if(query){
-            fetchByKey(query);  
-        } else if (cat) {
-            fetchPropertiesByCategory(cat);
-        } else{
-            fetchProperties(); 
-        }
-    }); 
     </script>
 
-    <title>Listings</title>
+    <title>Listing</title>
 
     
 </head>
 
 <body>
-<div id="header"></div>
-    <div id = "wrap" style = "margin-top:74px;">
-        <div class = "countMessage"></div>
-        <div class="propertyDiv"></div>
+
+        <div class="header sticky" id="header">
+                <div class="container">
+                    <div class="col-md-12" style="text-align: right">
+                        <form class="form-inline">
+                            <input class="form-control mr-sm-2" type="search" placeholder="Enter house name" aria-label="Search">
+                            <button class="btn btn-outline-success my-2 my-sm-0" style="color:black;" type="submit">Search</button>
+                        </form>
+                    </div>
+                </div>  
+            </div>
+
+    <div class="propertyDiv">
+
     </div>
-    <div id="newProperty">
-        <p>Can't find a property? <a href="new_house.html">Click Here!</a></p>
-    </div>
-    
-<!-- <div id="footer"></div> -->
 </body>
 </html>
