@@ -176,4 +176,4 @@ if ($pathLength == 3) { //Means there are no parameters at the end of the path.
 //RESPONSE
 header("content-type: application/json");
 print json_encode($output);
-file_put_contents("log.txt", json_last_error_msg());
+//file_put_contents("log.txt", json_last_error_msg());
