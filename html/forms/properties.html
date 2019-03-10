@@ -34,11 +34,13 @@
     
     $( document ).ready(function() {
         if(query){
-            fetchByKey(query);  
+            console.log("keyword=" + query);
+            ajaxGet("properties.php/v2/search/" + query, fetchByKey);
+            //fetchByKey(query);  
         } else if (cat) {
             fetchPropertiesByCategory(cat);
         } else{
-            fetchProperties(); 
+            ajaxGet("properties.php/v2/all", fetchProperties); 
         }
     }); 
     </script>

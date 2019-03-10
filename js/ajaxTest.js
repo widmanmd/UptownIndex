@@ -7,20 +7,91 @@
 */
 
 // --==HOST URL (CHANGE DEPENDING ON YOUR SETUP)==--
-var HOST = "http://uptownindex:8080/htdocs/";
+var HOST = "http://uptownindex:8080/prototypev3/";
 
 //--AJAX CALLS
+
+function ajaxGet(url, callbackFunction) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            callbackFunction(this);
+        }
+    };
+    xhttp.open("GET", HOST + url, true);
+    xhttp.send();
+}
+
+function ajaxPost(url, callbackFunction) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            callbackFunction(this);
+        }
+    };
+    xhttp.open("POST", HOST + url, true);
+    xhttp.send();
+}
+
+function fetchProperties(xhttp) {
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+        var result = JSON.parse(xhttp.responseText);
+        console.log("Hi");
+        if (result.status == "OK") {
+            $(".propertyDiv").append($("<table/>").attr("id", "propertyTable"));
+            $("#propertyTable").attr("class", "table table-striped");
+    
+            for (i = 0; i < result.properties.length; i++) {
+                $("#propertyTable").append(
+                    $("<tbody/>")
+                        .html("<tr><td>" + "<a href=\"" + HOST + "html/forms/listing.html?id=" + 
+                        result.properties[i].id + "\">" + result.properties[i].name + "</a>" + 
+                        "<br>" + result.properties[i].address + "</td><td>" +
+                        "Bedrooms: " + result.properties[i].beds + "<br>" + "Bathrooms: " + result.properties[i].baths
+                        + "</td></tr>")
+                );
+            }
+        }
+        else {
+            console.log("Status: " + result.status + ", Msg: " + result.msg);
+            alert("Unknown Error. Check console.");
+        }
+    }
+}
+
+function fetchByKey(xhttp) {
+        var result = JSON.parse(xhttp.responseText);
+
+        console.log(result);
+        if (result.status == "OK") {
+            $(".countMessage").html("<h4>"+ result.count + 'results found.'+"</h4>");
+            $(".propertyDiv").append($("<table/>").attr("id", "propertyTable"));
+            $("#propertyTable").attr("class", "table table-striped");
+
+            for (i = 0; i < result.properties.length; i++) {
+                $("#propertyTable").append($("<tbody/>")
+                .html("<tr><td>" + result.properties[i].address + "</td><td>" +
+                "<a href=\"" + HOST + "/html/forms/listing.html?id=" + result.properties[i].id + "\">Click Here!</a>"
+                + "</td></tr>")
+                );
+            }
+        } else {
+            $(".countMessage").html("<h4>"+'No matching results found.'+"</h4>");
+            console.log("Status: " + result.status + ", Msg: " + result.msg);
+        }
+}
 
 /** fetchProperties()
     AJAX call to fetch list of all properties. See REST-API-CALLS.txt for more
         information.
 */
-function fetchProperties() {
+
+/* function fetchProperties() {
 
     console.log("calling fetchProperties()...");
 
     $.ajax( {
-        url: HOST + "rest.php/v1/properties",
+        url: HOST + "properties.php/v2/all",
         type: "GET",
         dataType: "JSON",
         success: function(result) {
@@ -31,32 +102,32 @@ function fetchProperties() {
             ajaxFailure(xhr);
         }
     });
+"properties.php/v2/search/keyword=" + key
+} */
 
-}
-
-function fetchByKey(key){
+/* function fetchByKey(key){
     console.log("keyword=" + key);
 
     $.ajax( {
-        url: HOST + "rest.php/v1/properties/search/" + key,
+        url: HOST + "properties.php/v2/search/" + key,
         type: "POST",
         dataType: "JSON",
         success: function(result) {
-			console.log("success!");
+			console.log("success! count = " + result.count);
 			fetchByKeySuccess(result);
 		},
         failure: function(xhr) {
 			ajaxFailure(xhr);
 		}
     });
-}
+} */
 
 function fetchPropertiesByCategory(cat) {
 
     console.log("calling fetchPropertiesByCategory()...");
 
     $.ajax( {
-        url: HOST + "rest.php/v1/properties/cat/" + cat,
+        url: HOST + "properties.php/v2/by/" + cat,
         type: "GET",
         dataType: "JSON", 
         success: function(result) {
@@ -76,7 +147,7 @@ function fetchPropertiesByCategory(cat) {
 */
 function fetchPropertyByID(id) {
     $.ajax( {
-        url: HOST + "rest.php/v1/properties/" + id,
+        url: HOST + "properties.php/v2/id/" + id,
         type: "GET",
         dataType: "JSON",
         success: function(result) {
@@ -98,7 +169,7 @@ function fetchPropertyByID(id) {
 function fetchReviewsForProperty(id) {
 	console.log("Fetching Reviews...");
     $.ajax( {
-        url: HOST + "rest.php/v1/reviews/" + id,
+        url: HOST + "reviews.php/v2/id/" + id,
         type: "GET",
         dataType: "JSON",
         success: function (result) {
@@ -128,7 +199,7 @@ function postReview(id, rent, maintenance, location, recommended, comments) {
     var objJSON = JSON.stringify(obj);
 
     $.ajax( {
-        url: HOST + "rest.php/v1/reviews/add",
+        url: HOST + "reviews.php/v2/add",
         type: "POST",
         dataType: "JSON",
         data: objJSON,
@@ -160,7 +231,7 @@ function postProperty(address, apt, aptNum, name, bedNum, bathNum, tenants, desc
     var objJSON = JSON.stringify(obj);
     console.log("Posting Property...")
     $.ajax( {
-        url: HOST + "rest.php/v1/properties/add",
+        url: HOST + "properties.php/v2/add",
         type: "POST",
         dataType: "JSON",
         data: objJSON,
@@ -275,7 +346,7 @@ function fetchPropertiesSuccess(result) {
         for (i = 0; i < result.properties.length; i++) {
             $("#propertyTable").append(
                 $("<tbody/>")
-                    .html("<tr><td>" + "<a href=\"" + HOST + "/html/forms/listing.html?id=" + 
+                    .html("<tr><td>" + "<a href=\"" + HOST + "html/forms/listing.html?id=" + 
                     result.properties[i].id + "\">" + result.properties[i].name + "</a>" + 
                     "<br>" + result.properties[i].address + "</td><td>" +
                      "Bedrooms: " + result.properties[i].beds + "<br>" + "Bathrooms: " + result.properties[i].baths

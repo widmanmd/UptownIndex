@@ -1,0 +1,53 @@
+body {
+    font-family: 'Karla', sans-serif;
+    background-color: #A8D0E6; 
+}
+
+* {
+    margin: 0;
+}
+html, body {
+    height: 100%;
+}
+.page-wrap {
+    min-height: 100%;
+    /* equal to footer height */
+    margin-bottom: -25px; 
+}
+.page-wrap:after {
+    content: "";
+    display: block;
+}
+.site-footer, .page-wrap:after {
+    height: 25px; 
+    text-align: center;
+}
+.site-footer {
+    background: #374785;
+    color: white;
+}
+.underline {
+    text-decoration: underline;
+    text-decoration-color: white;
+    text-underline-position: under;
+    font-size: 50px;
+    color: #24305E
+}
+
+.introP {
+    text-align: center;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 20px;
+}
+.featuredHeading {
+    text-align: center;
+    color:#24305E;
+}
+
+.featuredBody {
+    padding-left: 50px;
+    max-width: 1200px;
+
+}

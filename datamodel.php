@@ -6,8 +6,30 @@ require_once('config.php');
 //3. Fetch Reviews given PropertyId
 //4. Insert Review
 
+
+//ARRAY REFERENCE NAMES
+define('PROP_ADDRESS', 'address');
+define('PROP_CITY', 'city');
+define('PROP_STATE', 'state');
+define('PROP_ZIP', 'zipCode');
+define('PROP_NAME', 'name');
+define('PROP_TYPE', 'propertyType');
+define('PROP_APT_NUMBER', 'apt_number');
+define('PROP_OCCUPANCY', 'occupancy');
+define('PROP_BEDS', 'beds');
+define('PROP_BATHS', 'baths');
+define('PROP_MANAGER', 'managerName');
+define('PROP_DESC', 'description');
+define('REVIEW_PROP_ID', 'propertyID');
+define('REVIEW_RENT', 'rent');
+define('REVIEW_REC', 'recommended');
+define('REVIEW_MAINT_RATE', 'maintenance');
+define('REVIEW_NBRHD_RATE', 'neighborhood');
+define('REVIEW_BODY', 'body');
+
 // connect to the database
-function connectDB(){
+function connectDB()
+{
     $mysqli = mysqli_connect(MYSQL_HOST, MYSQL_USER,MYSQL_PW,MYSQL_DB, MYSQL_PORT);
     if (mysqli_connect_errno($mysqli)) {
 		echo "Failed to connect to MySQL: " . mysqli_connect_error();
@@ -47,7 +69,7 @@ function selectAllProperties()
 }
 
 // Fetch Property Given Id
-function findPropertyById($id){
+function selectPropertyById($id){
     $conn = connectDB();
     $sql = "SELECT * FROM property WHERE pk=?";
  
@@ -115,6 +137,54 @@ function findReviewsById($propertyID){
     return $arr;
 }
 
+/* inserts new property into the database
+    @param associative array containing property attributes.
+    @returns associative array containing status code and message
+*/
+function insertProperty($propArr)
+{
+    //PROCESS ARRAY
+    $name = $propArr[PROP_NAME];
+    $address = $propArr[PROP_ADDRESS];
+    //$city = $propArr[PROP_CITY]; //NOT FULLY IMPLEMENTED
+    $city = "Oxford";
+    //$state = $propArr[PROP_STATE]; //NOT FULLY IMPLEMENTED
+    $state = "Ohio";
+    //$zip = $propArr[PROP_ZIP]; //NOT FULLY IMPLEMENTED
+    $zip = "45056";
+    $type = $propArr[PROP_TYPE];
+    $number = $propArr[PROP_APT_NUMBER];
+    $occupancy = $propArr[PROP_OCCUPANCY];
+    $beds = $propArr[PROP_BEDS];
+    $baths = $propArr[PROP_BATHS];
+    //$manager = $propArr[PROP_MANAGER]; //NOT YET FULLY IMPLEMENTED
+    $manager = "unclaimed";
+    $description = $propArr[PROP_DESC];
+    
+    $conn = connectDB();
+    $sql = "INSERT INTO property (address, description, beds, baths, managerName,
+    city,state,zipCode,propertyType,name,occupancy,apt_number) 
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssiissssssii", $address, $description, $beds, $baths,
+    $manager, $city, $state, $zip, $type, $name, $occupancy, $number);
+
+    if(!$stmt->execute()) {
+        echo "FAILED TO INSERT PROPERTIES" . $stmt->error;
+        $arr = array('status'=>'FAIL', 'msg'=>"FAILED TO INSERT PROPERTIES" . $stmt->error);
+        file_put_contents("log2.txt", "PostProperty Failure " . $stmt->error . "\n Expected: HOUSE, Rceived: " . $type);
+    }else{
+        $status = 'OK';
+		$msg = 'SUCCESS';
+		$arr = array('status'=>$status, 'msg'=>$msg);
+        file_put_contents("log2.txt", "PostProperty Success");
+    }
+    $stmt->close();
+    $conn->close();
+    return $arr;
+}
+
 // Insert New Property
 function addProperty($address, $description, $beds, $baths, $managerName, 
 $city, $state, $zipCode, $propertyType, $name, $occupancy, $apt_number){
@@ -136,6 +206,39 @@ $city, $state, $zipCode, $propertyType, $name, $occupancy, $apt_number){
 		$msg = 'SUCCESS';
 		$arr = array('status'=>$status, 'msg'=>$msg);
         file_put_contents("log2.txt", "PostProperty Success");
+    }
+    $stmt->close();
+    $conn->close();
+    return $arr;
+}
+
+
+/* inserts new review into the database
+    @param associative array containing review attributes.
+    @returns associative array containing status code and message
+*/
+function insertReview($reviewArr) {
+    $propertyID = (int) $reviewArr[REVIEW_PROP_ID];
+    $rent = $reviewArr[REVIEW_RENT];
+    $recommended = $reviewArr[REVIEW_REC];
+    $maintenance = $reviewArr[REVIEW_MAINT_RATE];
+    $neighborhood = $reviewArr[REVIEW_NBRHD_RATE];
+    $body = $reviewArr[REVIEW_BODY];
+    
+    
+    $conn = connectDB();
+    $sql = "INSERT INTO review (recommended, rent, maintenance, neighborhood, body, propertyID) 
+    VALUES (?,?,?,?,?,?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("iisssi", $recommended, $rent, $maintenance, $neighborhood, $body, $propertyID);
+	$arr = array();
+    if(!$stmt->execute()) {
+        echo "FAILED TO INSERT REVIEW" . $stmt->error;
+        $arr = array('status'=>'FAIL', 'msg'=>"FAILED TO INSERT REVIEW" . $stmt->error);
+    }else{
+        $status = 'OK';
+		$msg = 'SUCCESS';
+		$arr = array('status'=>$status, 'msg'=>$msg);
     }
     $stmt->close();
     $conn->close();
@@ -171,7 +274,7 @@ function keywordSearch($keyword){
     $keyword = strtoupper($keyword);    
     $keyword = strip_tags($keyword);    
     $keyword = trim($keyword); 
-
+    file_put_contents("log.txt", $keyword);
     $sql = "SELECT * FROM property WHERE upper(name) LIKE ? OR upper(address) LIKE ?";
  
     $temp = '%'.$keyword.'%';
