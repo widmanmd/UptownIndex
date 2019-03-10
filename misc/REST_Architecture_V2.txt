@@ -1,0 +1,133 @@
+New Rest Service Build
+
+    Structure:
+        2 files
+        properties.php handles all property calls
+        reviews.php handles all review calls
+        use switch statements to avoid nesting ifs
+        
+properties.php Calls:
+    
+    properties.php/v2/all
+		DESCRIPTION: fetches basic information on all properties
+		METHOD: GET
+		JSON_INPUT: 
+			none
+		JSON_OUTPUT:
+			status - "OK" or "FAIL"
+			msg - detailed response on success or failure of the operation
+			properties[array]
+				property{obj}
+					address
+					name
+					beds
+					baths
+					etc.
+                    
+                    
+    properties.php/v2/id/[property-id]
+		DESCRIPTION: fetches detailed information on a property with given [property-id]
+		METHOD: GET
+		JSON_INPUT:
+			none
+		JSON_OUTPUT:
+			status - "OK" or "FAIL"
+			msg - detailed response on success or failure of the operation
+			property{obj}
+				address
+				name
+				description
+				occupancy
+				beds
+				baths
+				etc.
+                
+                
+    properties.php/v2/add
+		DESCRIPTION: sends new property to datamodel to be inserted into the database.
+		METHOD: POST
+		JSON_INPUT:
+			property{obj}
+				address
+				name
+				apartment
+				aptNum
+				description
+				occupancy
+				beds
+				baths
+				etc.
+		JSON_OUTPUT:
+			status - "OK" or "FAIL"
+			msg - detailed response on success or failure of the operation
+	
+    
+    properties.php/v2/by/[category]
+		DESCRIPTION: fetches basic information on all properties that match the given category.
+		METHOD: GET
+		JSON_INPUT:
+			none
+		JSON_OUTPUT:
+			status - "OK" or "FAIL"
+			msg - detailed response on success or failure of the operation
+			properties[array]
+				property{obj}
+					address
+					name
+					beds
+					baths
+					etc.
+                    
+                    
+    properties.php/v2/search/[keyword]
+		DESCRIPTION: fetches basic information on properties that have keywords found in the given string.
+		METHOD: POST
+		JSON_INPUT:
+			query(string)
+		JSON_OUTPUT:
+			status - "OK" or "FAIL"
+			msg - detailed response on success or failure of the operation
+			properties[array]
+				property{obj}
+					address
+					name
+					beds
+					baths
+					etc.
+                    
+
+reviews.php Calls:
+
+    reviews.php/v1/id/[property-id]
+		DESCRIPTION: fetches all reviews on a property with given [property-id]
+		METHOD: GET
+		JSON_INPUT:
+			none
+		JSON_OUTPUT:
+			status - "OK" or "FAIL"
+			msg - detailed response on success or failure of the operation
+			reviews[array]
+				review{obj}
+					review-id
+					rent
+					maintenance-rating
+					neighborhood-rating
+					body
+					etc.
+                    
+    reviews.php/v1/add
+		DESCRIPTION: sends review to datamodel to be inserted into the database.
+		METHOD: POST
+		JSON_INPUT:
+			review{obj}
+				propertyID
+				rentAmt
+				maintenanceRating
+				locationRating
+				recommended
+				body
+				etc.
+		JSON_OUTPUT:
+			status - "OK" or "FAIL"
+			msg - detailed response on success or failure of the operation
+		

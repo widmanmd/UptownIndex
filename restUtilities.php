@@ -44,3 +44,11 @@ function invalidMethod()
 	$output['msg'] = 'INVALID METHOD';
 }
 
+//ERROR RESPONSE FUNCTION - INVALID CALL
+function invalidCall()
+{
+	//header("HTTP/1.1 404 Not Found");
+	$output['status'] = 'FAIL';
+	$output['msg'] = 'INVALID PATH OR METHOD';
+}
+

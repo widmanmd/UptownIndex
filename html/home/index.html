@@ -7,11 +7,13 @@
     <link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link rel="stylesheet" href="../../styles/header.css">
-    <link rel="stylesheet" href="../../styles/review.css"> 
-    <link rel="stylesheet" href="../../styles/main.css"> 
+	<link rel="stylesheet" href="../../styles/footer.css">
+	<link rel="stylesheet" href="../../styles/review.css">
+    <link rel="stylesheet" href="../../styles/main.css">
 
-    <script src="../../js/jquery-3.3.1.min.js"></script>
+	<script src="../../js/jquery-3.3.1.min.js"></script>
     <script src="../../js/ajaxTest.js"></script>
+	<script type="text/javascript" src="../../js/header.js"></script>  
 
     <script type="text/javascript">
         $(document).ready(function(){
@@ -20,23 +22,16 @@
             document.getElementById("link").setAttribute("href","../forms/listing.html?id=" + id);
         });
     </script>
-
 </head>
 <body>
-<div class="header" id="myHeader">
-	<br>
-        <div class="container">
-            <div class="col-md-12" style="text-align: right">
-                <form class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Enter house name" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" style="color:black" type="submit">Search</button>
-                </form>
-            </div>
-        </div>
-</div>
-<div class="page-wrap">
+	<div id="header"></div>
+
+    <div class="page-wrap">
     <br><br>
     <h1 class="underline" style="text-align: center;"><b>Welcome to Uptown Index! </b></h1>
+    <h3 style="text-align: center;"><a href="../forms/properties.html?category=HOUSE">Browse Houses</a></h3>
+    <h3 style="text-align: center;"><a href="../forms/properties.html?category=APARTMENT">Browse Apartments</a></h3>
+	<h3 style="text-align: center;"><a href="../forms/properties.html">Browse All Properties</a></h3>
     <h3 style="text-align: center;">Built by <span style="color: #f76c6c"> Miami </span>students,
          for <span style="color: #f76c6c"> Miami </span> Students</h3><br>
     <p class ="introP" style="text-align:center">We provide access to information about a variety of properties in the Oxford-uptown area.
@@ -63,10 +58,8 @@
 
 	<h3 style="text-align: center;"><a style="color: #24305E" href="../forms/properties.html"><b>Browse All Properties</b></a></h3>
 </div>
-
-    <footer class="site-footer">
-            Property of Uptown Index
-    </footer>
+    
+<div id="footer"></div>
 	
 </body>
 </html>

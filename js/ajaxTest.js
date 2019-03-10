@@ -7,7 +7,7 @@
 */
 
 // --==HOST URL (CHANGE DEPENDING ON YOUR SETUP)==--
-var HOST = "http://localhost:8080/";
+var HOST = "http://uptownindex:8080/prototypev3/";
 
 //--AJAX CALLS
 
