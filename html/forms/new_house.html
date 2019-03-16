@@ -27,7 +27,7 @@
         $("input[type='radio']").click(function(){
             var radioValue = $("input[name='AptSelection']:checked");
             if(radioValue.length > 0){
-                if (radioValue.val() == "yes") {
+                if (radioValue.val() == "APARTMENT") {
                     if (appendCount < 1) {
                         $('.form-group3').show();
                     }
@@ -95,7 +95,7 @@
 
                     <div class="form-group3">
                             <label for="address" style="float: left";>Apartment #:</label>
-                            <input type="aptNum" class="form-control" id="aptNum" aria-describedby="aptNum" value="0"
+                            <input type="aptNum" class="form-control" id="aptNum" aria-describedby="aptNum" value=""
                             input name="number" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
                             <br>
                     </div>
