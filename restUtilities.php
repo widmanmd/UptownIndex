@@ -52,3 +52,47 @@ function invalidCall()
 	$output['msg'] = 'INVALID PATH OR METHOD';
 }
 
+function processFiles($files) {
+    $path = 'uploads/';
+    $file = $path . "default.png";
+        
+    if(isset($files['files'])) {
+        $errors = [];
+        $extensions = ['jpg', 'jpeg', 'png'];
+    
+        $all_files = count($files['files']['tmp_name']);
+    
+        for ($i = 0; $i < $all_files; $i++) {
+            $file_name = $files['files']['name'][$i];
+            $file_tmp = $files['files']['tmp_name'][$i];
+            $file_type = $files['files']['type'][$i];
+            $file_size = $files['files']['size'][$i];
+            $exploded = explode('.', $files['files']['name'][$i]);
+            $file_ext = strtolower(end($exploded));
+            
+            $file = $path . strtotime("now") . $file_name;
+            
+            if (!in_array($file_ext, $extensions)) {
+                $errors[] = 'Invalid Extension : ' . $file_name . ' ' . $file_type;
+            }
+            
+            if ($file_size > 2097152) {
+                $errors[] = 'File Exceeds Size Restriction : ' . $file_name . ' ' . $file_size;
+            }
+            
+            if (empty($errors)) {
+                move_uploaded_file($file_tmp, $file);
+            }
+        }
+        
+        if($errors) {
+            $output = array('status'=>'FAIL', 'msg'=>'FILE UPLOAD FAILURE', 'errors'=>$errors);
+        } else {
+            $output = array('status'=>'OK', 'msg'=>'SUCCESS', 'photo'=>$file);
+        }
+    } else {
+        $output = array('status'=>'OK', 'msg'=>'NO FILES TO UPLOAD', 'photo'=>$file);
+    }
+    
+    return $output;
+}

@@ -7,7 +7,7 @@
 */
 
 // --==HOST URL (CHANGE DEPENDING ON YOUR SETUP)==--
-var HOST = "http://localhost:8080/";
+var HOST = "http://uptownindex:8080/prototypev4/";
 
 //--AJAX CALLS
 
@@ -88,6 +88,7 @@ function fetchPropertyByID(xhttp) {
         $("#bathNum").append(result.baths);
         $("#description").append(result.description);
         $("#occupancy").append(result.occupancy);
+        $("#photo").attr("src", "../../" + result.photo);
     }
     else {
         console.log("Status: " + result.status + ", Msg: " + result.msg);

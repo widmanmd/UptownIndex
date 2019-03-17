@@ -20,6 +20,7 @@ define('PROP_BEDS', 'beds');
 define('PROP_BATHS', 'baths');
 define('PROP_MANAGER', 'managerName');
 define('PROP_DESC', 'description');
+define('PROP_PHOTO', 'photo');
 define('REVIEW_PROP_ID', 'propertyID');
 define('REVIEW_RENT', 'rent');
 define('REVIEW_REC', 'recommended');
@@ -48,11 +49,11 @@ function selectAllProperties()
 		//echo "error executing query" . $stmt->error;
 		return array('status'=>'FAIL', 'msg'=>"error executing query" . $stmt->error);
 	} else {
-		$stmt->bind_result($pk, $address, $description,$beds, $baths, $manager, $city, $state, $zip, $propertyType, $name, $occupancy, $aptNumber);
+		$stmt->bind_result($pk, $address, $description,$beds, $baths, $manager, $city, $state, $zip, $propertyType, $name, $occupancy, $aptNumber, $photo);
 		$propertyList = array();
 		while($stmt->fetch()) {
 			$property = array('id'=>$pk, 'address'=>$address, 'beds'=>$beds, 'baths'=>$baths, 'manager'=>$manager, 'city'=>$city, 'state'=>$state, 
-						'zip'=>$zip, 'propertyType'=>$propertyType, 'name'=>$name, 'occupancy'=>$occupancy, 'aptNumber'=>$aptNumber);
+						'zip'=>$zip, 'propertyType'=>$propertyType, 'name'=>$name, 'occupancy'=>$occupancy, 'aptNumber'=>$aptNumber, 'photo'=>$photo);
 			array_push($propertyList, $property);
 			
 			//Can use for debugging. Remove before release.
@@ -81,7 +82,7 @@ function selectPropertyById($id){
         $arr = array('status'=>'FAIL', 'msg'=>"error executing query" . $stmt->error);
     }else{
         $stmt->bind_result($pk, $address, $description, $beds, $baths, $managerName, 
-        $city, $state, $zipCode, $propertyType, $name, $occupancy, $apt_number);
+        $city, $state, $zipCode, $propertyType, $name, $occupancy, $apt_number, $photo);
         $stmt->fetch();
         if(isset($pk)) {
             $status = 'OK';
@@ -89,7 +90,7 @@ function selectPropertyById($id){
             $arr = array('status'=>$status, 'msg'=>$msg, 'address'=>$address, 
             'description'=>$description,'beds'=>$beds,'baths'=>$baths,'managerName'=>$managerName,
             'city'=>$city,'state'=>$state,'zipCode'=>$zipCode,'propertyType'=>$propertyType,
-            'name'=>$name,'occupancy'=>$occupancy,'apt_number'=>$apt_number);
+            'name'=>$name,'occupancy'=>$occupancy,'apt_number'=>$apt_number, 'photo'=>$photo);
         } else {
             $status = 'FAIL';
             $msg = 'PROPERTY NOT FOUND';
@@ -160,25 +161,26 @@ function insertProperty($propArr)
     //$manager = $propArr[PROP_MANAGER]; //NOT YET FULLY IMPLEMENTED
     $manager = "unclaimed";
     $description = $propArr[PROP_DESC];
+    $photo = $propArr[PROP_PHOTO];
     
     $conn = connectDB();
     $sql = "INSERT INTO property (address, description, beds, baths, managerName,
-    city,state,zipCode,propertyType,name,occupancy,apt_number) 
-    VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+    city,state,zipCode,propertyType,name,occupancy,apt_number,photo) 
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssiissssssii", $address, $description, $beds, $baths,
-    $manager, $city, $state, $zip, $type, $name, $occupancy, $number);
+    $stmt->bind_param("ssiissssssiis", $address, $description, $beds, $baths,
+    $manager, $city, $state, $zip, $type, $name, $occupancy, $number, $photo);
 
     if(!$stmt->execute()) {
-        echo "FAILED TO INSERT PROPERTIES" . $stmt->error;
-        $arr = array('status'=>'FAIL', 'msg'=>"FAILED TO INSERT PROPERTIES" . $stmt->error);
-        file_put_contents("log2.txt", "PostProperty Failure " . $stmt->error . "\n Expected: HOUSE, Rceived: " . $type);
+        //echo "FAILED TO INSERT PROPERTIES" . $stmt->error;
+        $arr = array('status'=>'FAIL', 'msg'=>"FAILED TO INSERT PROPERTIES " . $stmt->error);
+        //file_put_contents("log2.txt", "PostProperty Failure " . $stmt->error . "\n Expected: HOUSE, Rceived: " . $type);
     }else{
         $status = 'OK';
 		$msg = 'SUCCESS';
 		$arr = array('status'=>$status, 'msg'=>$msg);
-        file_put_contents("log2.txt", "PostProperty Success");
+        //file_put_contents("log2.txt", "PostProperty Success");
     }
     $stmt->close();
     $conn->close();
@@ -287,7 +289,7 @@ function keywordSearch($keyword){
         $arr = array('status'=>'FAIL', 'msg'=>"error executing query" . $stmt->error);
     }else{
         $stmt->bind_result($pk, $address, $description, $beds, $baths, $managerName, 
-        $city, $state, $zipCode, $propertyType, $name, $occupancy, $apt_number);
+        $city, $state, $zipCode, $propertyType, $name, $occupancy, $apt_number, $photo);
 
 		$propertyList = array();
         while($stmt->fetch()) {
@@ -322,7 +324,7 @@ function selectPropertiesByCategory($type)
 		//echo "error executing query" . $stmt->error;
 		return array('status'=>'FAIL', 'msg'=>"error executing query" . $stmt->error);
 	} else {
-		$stmt->bind_result($pk, $address, $description,$beds, $baths, $manager, $city, $state, $zip, $propertyType, $name, $occupancy, $aptNumber);
+		$stmt->bind_result($pk, $address, $description,$beds, $baths, $manager, $city, $state, $zip, $propertyType, $name, $occupancy, $aptNumber, $photo);
 		$propertyList = array();
 		while($stmt->fetch()) {
 			$property = array('id'=>$pk, 'address'=>$address, 'beds'=>$beds, 'baths'=>$baths, 'manager'=>$manager, 'city'=>$city, 'state'=>$state, 
