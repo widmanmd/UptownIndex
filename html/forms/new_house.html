@@ -1,149 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
-    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet">
-    <link rel="stylesheet" href="../../styles/new_house.css"> 
-	<link rel="stylesheet" href="../../styles/header.css">
-	<link rel="stylesheet" href="../../styles/footer.css">
-	<link rel="stylesheet" href="/../../styles/main.css"> 
-    
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="Keywords" content="New House">
+    <meta name="Description" content="Insertion page for properties">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>New House</title>
+    <!--bootstrap CDN-->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!--local js file-->
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../../js/ajaxTest.js"></script>
+    <script type="text/javascript" src="../../js/header.js"></script>
+    <!--local css file-->
+    <style type="text/css">
+        *{margin:0; padding:0}
+        a{text-decoration: none;}
+        ol,ul{list-style:none;}
+        /*textarea{resize: none;}*/
 
-    <title>Add property</title>
+        .newHouse-wrap{
+            width: 70%;
+            margin: 0 auto;
+        }
+        .prompt{
+            float: left;
+        }
 
+        h2{padding-top: 10px;}
 
-<script src="../../js/jquery-3.3.1.min.js"></script>
-<script type="text/javascript" src="../../js/ajaxTest.js"></script> 
-<script type="text/javascript" src="../../js/header.js"></script>   
+        #newHouse-info{
+            text-align: center;
+            font-weight: 700;
+            box-sizing: border-box;
+        }
 
+        .add{width: 400px; margin-bottom: 20px;}
+        .box1{float: left; margin-right: 50px;}
 
-<script type="text/javascript">
-    $(document).ready(function(){
-        $('.form-group3').hide();
-        var appendCount = 0;
-        $("input[type='radio']").click(function(){
-            var radioValue = $("input[name='AptSelection']:checked");
-            if(radioValue.length > 0){
-                if (radioValue.val() == "APARTMENT") {
-                    if (appendCount < 1) {
-                        $('.form-group3').show();
-                    }
-                    
-                }
-                else {
-                    $('.form-group3').hide();
-                    appendCount = 0;
-                }
-            }
-        });
-
-        $("#newHouseForm").submit( function(evt) {
-            //if (addressName == null || apt == null || || bednum == null || bathNum == null || tenants == null) {
-                //alert("Please fill in required data");
-           // }
-           evt.preventDefault();
-
-            var addressName = document.getElementById("address").value;
-            var apt = $("input[name='AptSelection']:checked").val();
-            var aptNum = document.getElementById("aptNum").value;
-            var name = document.getElementById("houseName").value;
-            var bedNum = document.getElementById("bedNum").value;
-            var bathNum = document.getElementById("bathNum").value;
-            var tenants = document.getElementById("tenants").value;
-            var desc = document.getElementById("desc").value;
-
-            postProperty(addressName, apt, aptNum, name, bedNum, bathNum, tenants, desc);
-
-        });
-        
-    });
-</script>
-
+        #description{width: 400px;resize: none;display: inline-block;}
+    </style>
 </head>
 
 <body>
     <div id="header"></div>
-    <br><br><br>
 
-    <section id="form"> 
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <h1>Add New Property</h1>
-                    <br>
+    <div class = "newHouse-wrap">
+        <h2><span id = "newHouse-info">Add New Properties</span></h2>
+        <hr>
+
+        <form method="post" onsubmit="" id="newHouseForm">
+            <div class = "prompt">
+                <!--address section-->
+                <div class = "add address">
+                    <h5><label for="address">Address:</label></h5>
+                    <div>
+                        <input type="text" class = "form-control" id = "address" name = "address"  placeholder="# and street name">
+                        <span class = "warn address"></span>
+                    </div>
+                </div>
+
+                <div class="add apartment">
+                    <h5><span>Is the property an apartment?</span></h5>
+                    <div class = "box1">
+                        <label class="radio-inline">
+                            <input type="radio" name="optradio3" value="yes"><span>&emsp;Yes</span>
+                        </label>
+                    </div>
+                    <div class = "box2">
+                        <label class="radio-inline">
+                            <input type="radio" name="optradio3" value="no"><span>&emsp;No</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class = "add houseName">
+                    <h5><label for="houseName">House Name:</label></h5>
+                    <div>
+                        <input type="text" class = "form-control" id = "houseName" name = "houseName"  placeholder="# and street name">
+                        <span class = "warn houseName"></span>
+                    </div>
+                </div>
+
+                <div class = "add bedRoom">
+                    <h5><label for="bedRoom"># of Bedrooms:</label></h5>
+                    <div>
+                        <input type="text" class = "form-control" id = "bedRoom" name = "bedRoom"  placeholder="Please enter a numerical value">
+                        <span class = "warn bedRoom"></span>
+                    </div>
+                </div>
+
+
+                <div class = "add bathRoom">
+                    <h5><label for="bedRoom"># of Bathrooms:</label></h5>
+                    <div>
+                        <input type="text" class = "form-control" id = "bathRoom" name = "bathRoom"  placeholder="Please enter a numerical value">
+                        <span class = "warn bathRoom"></span>
+                    </div>
+                </div>
+
+                <div class = "add Tenants">
+                    <h5><label for="tenants"># of Tenants:</label></h5>
+                    <div>
+                        <input type="text" class = "form-control" id = "tenants" name = "tenants"  placeholder="Please enter a numerical value">
+                        <span class = "warn tenants"></span>
+                    </div>
+                </div>
+
+                <div class = "add description">
+                    <h5><label for="description">Description:</label></h5>
+                    <div class = "box3">
+                        <textarea class="form-control" id="description" rows="3"></textarea>
+                        <span class = "warn description"></span>
+                    </div>
+                </div>
+
+                <div class="submitButton">
+                    <button type="submit" value="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>
-
-            <form method="post" onsubmit="" id="newHouseForm">
-                <div class="col-md-12">
-
-                    <div class="form-group1">
-                        <label for="address" style="float: left";>Address:</label>
-                        <input type="address" class="form-control" id="address" aria-describedby="emailHelp" placeholder="# and street name">
-                    </div>
-
-                    <div class="form-group2">
-                        <label for="houseName" style="float: left";>Is the property an apartment? &nbsp;</label>
-                        <input type="radio" name="AptSelection" value="APARTMENT"> Yes
-                        <input type="radio" name="AptSelection" value="HOUSE"> No 
-                        <br>
-                    </div>
-                    <br>
-
-                    <div class="form-group3">
-                            <label for="address" style="float: left";>Apartment #:</label>
-                            <input type="aptNum" class="form-control" id="aptNum" aria-describedby="aptNum" value=""
-                            input name="number" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
-                            <br>
-                    </div>
-
-                    <div class="form-group">
-                            <label for="houseName" style="float: left";>House Name:</label>
-                            <input type="houseName" class="form-control" id="houseName" aria-describedby="emailHelp" placeholder="Leave blank if none">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="bedNum" style="float: left";># of Bedrooms:</label>
-                        <input type="houseName" class="form-control" id="bedNum" aria-describedby="emailHelp" placeholder="Please enter a numerical value"
-                        input name="number" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="bathNum" style="float: left";># of Bathrooms:</label>
-                        <input type="houseName" class="form-control" id="bathNum" aria-describedby="emailHelp" placeholder="Please enter a numerical value"
-                        input name="number" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="tenNum" style="float: left";># of Tenants:</label>
-                        <input type="houseName" class="form-control" id="tenants" aria-describedby="emailHelp" placeholder="Please enter a numerical value"
-                        input name="number" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
-                    </div>
-            
-                    <div class="form-group">
-                            <label for="exampleFormControlTextarea1" style="float:left";>Description:</label>
-                            <textarea class="form-control" id="desc" rows="3" placeholder="Enter as much detail as you would like"></textarea>
-                    </div>
-                    <br><br>
-
-                    <div class="submitButton">
-                            <button type="submit" value="submit" class="btn btn-primary">Submit</button>
-                    </div>
-
-                </div>
-            </form>
-
-        </div>
-
-    </section>
-
-    <br><br>
-
-	
-
+        </form>
+    </div>
 </body>
 </html>
 

@@ -31,9 +31,8 @@
 		$(document).ready(function(){
 			var id = getUrlVars()['id'];
 			$("#submitReview").attr("href", "review.html?id=" + id);
-			ajaxGet("properties.php/v2/id/" + id, fetchPropertyByID);
-			ajaxGet("reviews.php/v2/id/" + id, fetchReviewsForProperty);
-			//fetchReviewsForProperty(id); 
+			fetchPropertyByID(id);
+			fetchReviewsForProperty(id); 
 		});
 	
 			
