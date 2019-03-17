@@ -1,183 +1,302 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
-    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet">
-    <link rel="stylesheet" href="../../styles/review.css"> 
-	<link rel="stylesheet" href="../../styles/header.css">
-	<link rel="stylesheet" href="../../styles/footer.css">
-    <link rel="stylesheet" href="../../styles/main.css">
-	
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="Keywords" content="Review">
+    <meta name="Description" content="Review page for properties">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Review selected Property</title>
+    <!--bootstrap CDN-->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!--local js file-->
     <script src="../../js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="../../js/ajaxTest.js"></script>
-    <script type="text/javascript" src="../../js/header.js"></script>   
- 
+    <script type="text/javascript" src="../../js/header.js"></script>
+    <!--local css file-->
+    <style type="text/css">
+        *{margin:0; padding:0}
+        a{text-decoration: none;}
+        ol,ul{list-style:none;}
 
-    <script type="text/javascript">
+        .re-wrap{
+            width: 70%;
+            margin: 0 auto;
+        }
 
-	function getUrlVars() {
-    		var vars = {};
-    		var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-			vars[key] = value;
-			});
-    	return vars;
-		}
-	
-    $(document).ready(function(){
-		$("#reviewForm").submit(function(evt) {
-			evt.preventDefault();
-			
-			var id = getUrlVars()['id'];
-            var rentPrice = document.getElementById("price").value;
-            var rating1 = $("input[name='optradio']:checked").val();
-            var rating2 = $("input[name='optradio2']:checked").val();
-            var recommended = $("input[name='optradio3']:checked").val();
-            var description = document.getElementById("description").value;
+        h2{padding-top: 10px;}
 
-            postReview(id, rentPrice, rating1, rating2, recommended, description);
-		});
-		
-        <!-- $(".submitButton").on("click", function() { -->
-            <!-- //if (rentPrice == null || rating1 == null || || rating2 == null || recommend == null ) { -->
-                <!-- //alert("Please fill in required data"); -->
-           <!-- // } -->
-			<!-- var id = getURLVars()['id']; -->
-            <!-- var rentPrice = document.getElementById("price").value; -->
-            <!-- var rating1 = $("input[name='optradio']:checked").val(); -->
-            <!-- var rating2 = $("input[name='optradio2']:checked").val(); -->
-            <!-- var recommend = $("input[name='optradio3']:checked").val(); -->
-            <!-- var description = document.getElementById("description").value; -->
+        #re-info{
+            text-align: center;
+            font-weight: 700;
+            box-sizing: border-box;
+        }
 
-            <!-- postReview(id, rentPrice, raing1, rating2, recommended, description); -->
-        <!-- }) -->
-        
-    });
+        .prompt{
+            float: left;
+        }
 
-        
-    </script>
+        #rent {
+            height: 38px; width: 200px;display: inline-block;
+        }
+        .rent{line-height: 40px;}
 
-    <title>Review selected Property</title>
+        .add{width: 700px; margin-bottom: 20px;}
+        .add ul{width: 100px;  margin: 10px 10px 0 0;}
+        .add li{float: left; height: 20px; width: 20px;background-image: url("../../img/star.png"); cursor: pointer;}
+        .add ul+span{padding: 0 10px;}
+
+        .add ul .on {
+            background-position: 0 -28px;
+        }
+
+        .recommand label{
+            margin: 0 10px;
+        }
+
+        #description{width: 300px;resize: none;display: inline-block;}
+
+        .box1{float: left; margin-right: 50px;}
+        .box3{height: 86px;display: flex;
+            align-items: center;}
+
+        .warn{padding-left: 15px; color: red;}
+
+
+    </style>
 </head>
 
 <body>
-   
     <div id="header"></div>
-
-    <br><br><br>
-
-    <section id="form"> 
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <h1>Leave a Review! </h1>
-                    <br>
-                </div>
-            </div>
+    <div class = "re-wrap">
+            <h2><span id = "re-info">Create Review</span></h2>
+            <hr>
 
             <form method="post" onsubmit="" id="reviewForm">
-                
-                <div class="col-md-12">      
-                        
-                        <div class="form-group">
-                            <label for="rent" style="float: left";>Semester rent price:</label>
-                            <input type="address" class="form-control" id="price" aria-describedby="emailHelp" placeholder="# value"
-                            input name="number" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                <div class = "prompt">
+                    <!--price section-->
+                    <div class = "add rent">
+                        <h5><label for="rent">Semester rent price</label></h5>
+                        <div>
+                            <input type="text" class = "form-control" id = "rent" name = "rent"  placeholder="# value"
+                                   onchange="validRent(this)">
+                            <span class = "warn rent"></span>
                         </div>
-
-                    <label style="float:left">How would you rate the house maintenance / presentation?</label>
-                    <br><br>
-
-                    <div class="rating">
-
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio" value="1">1
-                        </label>
-
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio" value="2">2
-                        </label>
-
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio" value="3">3
-                        </label>
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio" value="4">4
-                        </label>
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio" value="5">5
-                        </label>
-
-                    </div> 
-
-                    <br><br>
-
-                    <label style="float:left">How would you rate the location / outdoor space?</label>
-                    <br><br>
-
-                    <div class="rating">
-
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio2" value="1">1
-                        </label>
-
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio2" value="2">2
-                        </label>
-
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio2" value="3">3
-                        </label>
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio2" value="4">4
-                        </label>
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio2" value="5">5
-                        </label>
-
-                    </div> 
-
-                    <br><br>
-
-                    <label style="float:left">Would you recommend this property?</label>
-                    <br><br>
-
-                    <div class="rating">
-
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio3" value="yes">Yes
-                        </label>
-
-                        <label class="radio-inline">
-                                <input type="radio" name="optradio3" value="no">No
-                        </label>
-                    </div> 
-
-                    <br><br>
-
-                    <div class="form-group">
-                            <label for="exampleFormControlTextarea1" style="float:left";>Comments about the property:</label>
-                            <textarea class="form-control" id="description" rows="3"></textarea>
                     </div>
+
+                    <!--rate section-->
+                    <div class="add maintain">
+                        <h5><span>Rate for house maintenance / presentation</span></h5>
+                        <ul>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                        </ul>
+                        <span>&emsp;Please rate for the house maintenance</span>
+                    </div>
+
+                    <div class="add location">
+                        <h5><span>Rate for house location / outdoor</span></h5>
+                        <ul>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                        </ul>
+                        <span>&emsp;Please rate for the house location</span>
+                    </div>
+
+                    <!--recommend section-->
+                    <div class="add recommend">
+                        <h5><span>Would you recommend this property?</span></h5>
+                        <div class = "box1">
+                            <label class="radio-inline">
+                                <input type="radio" name="optradio3" value="yes"><span>&emsp;Yes</span>
+                            </label>
+                        </div>
+                        <div class = "box2">
+                            <label class="radio-inline">
+                                <input type="radio" name="optradio3" value="no"><span>&emsp;No</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!--comment section-->
+                    <div class = "add description">
+                        <h5><label for="description">Comments:</label></h5>
+                        <div class = "box3">
+                            <textarea class="form-control" id="description" rows="3" onchange="validDescription(this)"></textarea>
+                            <span class = "warn description"></span>
+                        </div>
+                    </div>
+
 
                     <div class="submitButton">
-                            <button type="submit" value="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" value="submit" class="btn btn-primary">Submit</button>
                     </div>
-                </div> 
-
-
-
+                </div>
             </form>
+    </div>
 
-        </div>
+        <script>
+            var maLi = document.querySelectorAll(".maintain ul li"),
+                mUl = document.querySelector(".maintain ul"),
+                mText = document.querySelector(".maintain ul+span"),
+                ma_score = 0,
+                mshowIndex = -1,
+                marrText = ["Please rate for the house maintenance","Awful","Bad","Hmmmm","Recommend","Perfect!"];
+                mlength = maLi.length;
 
-    </section>
+            mUl.onmouseleave = function () {
+                mText.innerHTML = marrText[mshowIndex+1];
+                for(var m = 0; m < mlength; m++){
+                    maLi[m].className = "";
+                };
+                for(var n = 0; n <= mshowIndex; n++){
+                    maLi[n].className = "on";
+                };
+            };
 
+            for(var i = 0; i < mlength; i++){
+                maLi[i].index = i;
 
-    <br><br>
+                maLi[i].onclick = function () {
+                    mshowIndex = this.index;
+                };
 
+                maLi[i].onmouseenter = function () {
+                    var ind = this.index;
+                    for(var j = 0; j < mlength; j++){
+                        maLi[j].className = "";
+                    }
+
+                    for(j = 0; j <= ind; j++){
+                        maLi[j].className = "on";
+                        mText.innerHTML = marrText[ind+1];
+                        ma_score = ind;
+                        console.log(ma_score+1);
+                    }
+                };
+            }
+
+            var loLi = document.querySelectorAll(".location ul li"),
+                loUl = document.querySelector(".location ul"),
+                loText = document.querySelector(".location ul+span"),
+                lo_score = 0,
+                lshowIndex = -1,
+                larrText = ["Please rate for the house location","Awful","Bad","Hmmmm","Recommend","Perfect!"];
+                loength = loLi.length;
+
+            loUl.onmouseleave = function () {
+                loText.innerHTML = larrText[lshowIndex+1];
+                for(var m = 0; m < loength; m++){
+                    loLi[m].className = "";
+                };
+                for(var n = 0; n <= lshowIndex; n++){
+                    loLi[n].className = "on";
+                };
+            };
+
+            for(var i = 0; i < loength; i++){
+                loLi[i].index = i;
+
+                loLi[i].onclick = function () {
+                    lshowIndex = this.index;
+                };
+
+                loLi[i].onmouseenter = function () {
+                    var ind = this.index;
+                    for(var j = 0; j < loength; j++){
+                        loLi[j].className = "";
+                    }
+
+                    for(j = 0; j <= ind; j++){
+                        loLi[j].className = "on";
+                        loText.innerHTML = larrText[ind+1];
+                        lo_score = ind;
+                        console.log(lo_score+1);
+                    }
+                };
+            }
+
+            // var for rent  ---- id: rent
+            // var for maintain ----- ma_score
+            // var for location ------ lo_score
+            // var for choice -------- var recommended = $("input[name='optradio3']:checked").val();
+            // var for description --------- id: description
+
+            var id = getUrlVars()['id'];
+            var re_rent = document.getElementById("rent");
+            var re_recommended = $("input[name='optradio3']:checked").val();
+            var re_description = document.getElementById("description");
+            var warn_rent = document.getElementsByClassName("warn")[0];
+            var warn_description = document.getElementsByClassName("warn")[1];
+
+            function validAll() {
+                var vr = validRent(re_rent);
+                var vd = validDescription(re_description);
+                return vr && ma_score && lo_score && re_recommended && vd;
+            }
+
+            function validRent(obj) {
+                if(checkRent(obj)){
+                    warn_rent.innerText = "yes, it is a number";
+                    return true;
+                }else if(checkBlank(obj)){
+                    warn_rent.innerText = "Please do not leave this blank";
+                    return false;
+                }else{
+                    warn_rent.innerText = "Please enter a valid number";
+                    return false;
+                }
+            }
+
+            function validDescription(obj) {
+                if(checkBlank(obj)){
+                    warn_description.innerText = "Please do not leave this blank";
+                    return false;
+                }else{
+                    return true;
+                }
+            }
+
+            // check if the input is blank
+            function checkBlank(obj){
+                return obj.value === "";
+            }
+
+            // check if the number is a number
+            function checkRent(obj){
+                var numPattern = /^\d+$/;
+                return numPattern.test(obj.value);
+            }
+
+            
+            function getUrlVars() {
+                var vars = {};
+                var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+                    vars[key] = value;
+                });
+                return vars;
+            }
+
+            $(document).ready(function(){
+                $("#reviewForm").submit(function(evt) {
+                    if(!validAll()){
+                        console.log("Submit fail");
+                        evt.preventDefault();
+                    }else{
+                        console.log("Submit success");
+                        postReview(id, re_rent.value, ma_score, lo_score, re_recommended, re_description.value);
+                    }
+                });
+            });
+
+        </script>
+
+    <!--<div id = footer></div>-->
 </body>
 </html>

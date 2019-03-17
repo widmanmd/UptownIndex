@@ -1,27 +1,54 @@
-/* Style the header */
-.header {
-  padding: 10px 16px;
-  background: #555;
-  color: #f1f1f1;
+.fr{float: right;}
+.fl{float: left;}
+
+.up-header{
+    width: 100%;
+    background: #0e90d2;
+    display: block;
+    height: 50px;
 }
 
-/* Page content */
-.content {
-  padding: 16px;
+.up-container{
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    height: 100%;
+    max-width: 1000px;
+    position: relative;
 }
 
-/* The sticky class is added to the header with JS when it reaches its scroll position */
-.sticky {
-  position: fixed;
-  top: 0;
-  width: 100%
+.up-container li{
+    float: left;line-height: 50px;height: 50px; list-style: none;
+    padding: 0 20px;
 }
 
-/* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
-.sticky + .content {
-  padding-top: 102px;
+.up-container li a{
+    font-size: 15px;
+    color: #f2f2f2;
+    text-decoration: none;
+    cursor: pointer;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    display: block;
 }
 
-h1 {
-	color: green;
+.up-container li:hover{
+    background:#095f8a;
+}
+
+.left-bar-logo a{
+    color: #fff;
+    line-height: 50px;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 1.5em;
+}
+
+.left-bar-logo a:hover{color:#fff;text-decoration: none;}
+.right-bar-list{width: 730px;}
+
+.search-bar{
+    position: absolute;
+    top:5px;
+    right: 0;
 }

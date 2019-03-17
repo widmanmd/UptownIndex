@@ -9,23 +9,7 @@ body {
 html, body {
     height: 100%;
 }
-.page-wrap {
-    min-height: 100%;
-    /* equal to footer height */
-    margin-bottom: -25px; 
-}
-.page-wrap:after {
-    content: "";
-    display: block;
-}
-.site-footer, .page-wrap:after {
-    height: 25px; 
-    text-align: center;
-}
-.site-footer {
-    background: #374785;
-    color: white;
-}
+
 .underline {
     text-decoration: underline;
     text-decoration-color: white;
