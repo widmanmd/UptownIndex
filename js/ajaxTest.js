@@ -42,20 +42,55 @@ function fetchProperties(xhttp) {
             $("#propertyTable").attr("class", "table table-striped");
     
             for (i = 0; i < result.properties.length; i++) {
-                $("#propertyTable").append(
-                    $("<tbody/>")
-                        .html("<tr><td>" + "<a href=\"" + HOST + "html/forms/listing.html?id=" + 
-                        result.properties[i].id + "\">" + result.properties[i].name + "</a>" + 
-                        "<br>" + result.properties[i].address + "</td><td>" +
-                        "Bedrooms: " + result.properties[i].beds + "<br>" + "Bathrooms: " + result.properties[i].baths
-                        + "</td></tr>")
-                );
+                name = result.properties[i].name;
+                address = result.properties[i].address;
+                if (name === "null") {
+                    name = address;
+
+                    $("#propertyTable").append(
+                        $("<tbody/>")
+                            .html("<tr><td>" + "<a href=\"" + HOST + "html/forms/listing.html?id=" + 
+                            result.properties[i].id + "\">" + name + "</a>" + "</td><td>" +
+                            "Bedrooms: " + result.properties[i].beds + "<br>" + "Bathrooms: " + result.properties[i].baths
+                            + "</td></tr>")
+                    );
+                }
+                else {
+                    $("#propertyTable").append(
+                        $("<tbody/>")
+                            .html("<tr><td>" + "<a href=\"" + HOST + "html/forms/listing.html?id=" + 
+                            result.properties[i].id + "\">" + name + "</a>" + 
+                            "<br>" + address + "</td><td>" +
+                            "Bedrooms: " + result.properties[i].beds + "<br>" + "Bathrooms: " + result.properties[i].baths
+                            + "</td></tr>")
+                    );
+                }
+
+                
             }
         }
         else {
             console.log("Status: " + result.status + ", Msg: " + result.msg);
             alert("Unknown Error. Check console.");
         }
+    }
+}
+
+function fetchPropertyByID(xhttp) {
+    var result = JSON.parse(xhttp.responseText);
+
+    console.log(result);
+    if (result.status == "OK") {
+        $("#Address").append(result.address);
+        $("#HouseName").append(result.name)
+        $("#bedNum").append(result.beds);
+        $("#bathNum").append(result.baths);
+        $("#description").append(result.description);
+        $("#occupancy").append(result.occupancy);
+    }
+    else {
+        console.log("Status: " + result.status + ", Msg: " + result.msg);
+        alert("Unknown Error. Check console.");
     }
 }
 
@@ -79,6 +114,70 @@ function fetchByKey(xhttp) {
             $(".countMessage").html("<h4>"+'No matching results found.'+"</h4>");
             console.log("Status: " + result.status + ", Msg: " + result.msg);
         }
+}
+ 
+function fetchReviewsForProperty(xhttp) {
+    var result = JSON.parse(xhttp.responseText);
+
+    console.log(result);
+    if (result.status == "OK") {
+		console.log("done");
+		for(i = result.reviews.length - 1; i >= 0; i--) {
+			var main = result.reviews[i].maintenance;
+			var neig = result.reviews[i].neighborhood;
+			var rent = result.reviews[i].rent;
+			if(result.reviews[i].recommended == true) {
+				var rec = "Yes";
+			} else {
+				var rec = "No";
+			}
+			var body = result.reviews[i].body;
+			$("#ReviewListDiv").append(
+			"<div class=\"review-div mdl-grid\">" +
+				"<div class=\"mdl-cell mdl-cell--4-col\" style=\"border-style: solid; border-width: 5px;\">" + 
+					"<div style=\"padding: 5%\">" + 
+						"<h3 class=\"overall\">Overall Rating:  <b>5</b></h3>" + 
+						"<h3 class=\"maintenance\">Maintenance: <b>"+ main +"</b></h3>" + 
+						"<h3 class=\"neighborhood\">Neighborhood: <b>"+ neig +"</b></h3>" + 
+					"</div>" +
+				"</div>" + 
+				"<div class=\"mdl-cell mdl-cell--8-col\" style=\"border-style: solid; border-width: 5px;\">" + 
+					"<h5><b>Rent: " + rent + "</b></h5><p class=\"rentVal\"></p>  <h5><b>Recommended: " + rec + "</b></h5><p class=\"recVal\"></p>" +
+					"<h6>Comments: </h6><p class=\"bodyVal\">" + body + "</p>" +
+				"</div>" +
+			"</div>"
+			);
+		}
+    } else {
+        console.log("Status: " + result.status + ", Msg: " + result.msg);
+        alert("Unknown Error. Check console.");
+    }
+}
+
+function fetchPropertiesByCategory(xhttp) {
+    var result = JSON.parse(xhttp.responseText);
+
+    console.log(result);
+
+    if (result.status == "OK") {
+        $(".propertyDiv").append($("<table/>").attr("id", "propertyTable"));
+        $("#propertyTable").attr("class", "table table-striped");
+
+        for (i = 0; i < result.properties.length; i++) {
+            $("#propertyTable").append(
+                $("<tbody/>")
+                    .html("<tr><td>" + "<a href=\"" + HOST + "html/forms/listing.html?id=" + 
+                    result.properties[i].id + "\">" + result.properties[i].name + "</a>" + 
+                    "<br>" + result.properties[i].address + "</td><td>" +
+                     "Bedrooms: " + result.properties[i].beds + "<br>" + "Bathrooms: " + result.properties[i].baths
+                    + "</td></tr>")
+            );
+        }
+    }
+    else {
+        console.log("Status: " + result.status + ", Msg: " + result.msg);
+        alert("Unknown Error. Check console.");
+    }
 }
 
 /** fetchProperties()
@@ -122,6 +221,7 @@ function fetchByKey(xhttp) {
     });
 } 
 
+/**
 function fetchPropertiesByCategory(cat) {
 
     console.log("calling fetchPropertiesByCategory()...");
@@ -140,11 +240,33 @@ function fetchPropertiesByCategory(cat) {
     });
 }
 
+ */
+
 /** fetchPropertyByID(id)
     AJAX call to fetch property information, given a propertyID. See REST-API-CALLS.txt for more
         information.
 	@param integer id value
 */
+<<<<<<< HEAD
+
+/** 
+function fetchPropertyByID(id) {
+    $.ajax( {
+        url: HOST + "properties.php/v2/id/" + id,
+        type: "GET",
+        dataType: "JSON",
+        success: function(result) {
+			console.log("AJAX Success");
+			fetchPropertyByIDSuccess(result);
+		},
+        failure: function (xhr) {
+			ajaxFailure(xhr);
+		}
+    });
+
+}
+*/
+=======
 // function fetchPropertyByID(id) {
 //     $.ajax( {
 //         url: HOST + "properties.php/v2/id/" + id,
@@ -160,12 +282,15 @@ function fetchPropertiesByCategory(cat) {
 //     });
 
 // }
+>>>>>>> 39edb88ac040517c3ef4c666d033405b622bada5
 
 /** fetchReviewsByID(9d)
     AJAX call to fetch all reviews for a given propertyID. See REST-API-CALLS.txt for more
         information.
 	@param integer id value
 */
+
+/** 
 function fetchReviewsForProperty(id) {
 	console.log("Fetching Reviews...");
     $.ajax( {
@@ -182,6 +307,7 @@ function fetchReviewsForProperty(id) {
     });
 
 }
+*/
 
 /** postReview(id, rent, maintenance, location, recommended, comments)
     AJAX call to send review information to the server. See REST-API-CALLS.txt for more
