@@ -36,7 +36,7 @@
         if(query){
             console.log("keyword=" + query);
             ajaxGet("properties.php/v2/search/" + query, fetchByKey);
-            //fetchByKey(query);  
+            // fetchByKey(query);  
         } else if (cat) {
             fetchPropertiesByCategory(cat);
         } else{

@@ -7,7 +7,7 @@
 */
 
 // --==HOST URL (CHANGE DEPENDING ON YOUR SETUP)==--
-var HOST = "http://uptownindex:8080/prototypev3/";
+var HOST = "http://localhost:8080/";
 
 //--AJAX CALLS
 
@@ -105,7 +105,7 @@ function fetchByKey(xhttp) {
 "properties.php/v2/search/keyword=" + key
 } */
 
-/* function fetchByKey(key){
+ function fetchByKey(key){
     console.log("keyword=" + key);
 
     $.ajax( {
@@ -120,7 +120,7 @@ function fetchByKey(xhttp) {
 			ajaxFailure(xhr);
 		}
     });
-} */
+} 
 
 function fetchPropertiesByCategory(cat) {
 
@@ -145,21 +145,21 @@ function fetchPropertiesByCategory(cat) {
         information.
 	@param integer id value
 */
-function fetchPropertyByID(id) {
-    $.ajax( {
-        url: HOST + "properties.php/v2/id/" + id,
-        type: "GET",
-        dataType: "JSON",
-        success: function(result) {
-			console.log("AJAX Success");
-			fetchPropertyByIDSuccess(result);
-		},
-        failure: function (xhr) {
-			ajaxFailure(xhr);
-		}
-    });
+// function fetchPropertyByID(id) {
+//     $.ajax( {
+//         url: HOST + "properties.php/v2/id/" + id,
+//         type: "GET",
+//         dataType: "JSON",
+//         success: function(result) {
+// 			console.log("AJAX Success");
+// 			fetchPropertyByIDSuccess(result);
+// 		},
+//         failure: function (xhr) {
+// 			ajaxFailure(xhr);
+// 		}
+//     });
 
-}
+// }
 
 /** fetchReviewsByID(9d)
     AJAX call to fetch all reviews for a given propertyID. See REST-API-CALLS.txt for more
