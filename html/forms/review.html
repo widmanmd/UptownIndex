@@ -18,51 +18,39 @@
         *{margin:0; padding:0}
         a{text-decoration: none;}
         ol,ul{list-style:none;}
-
+        h2{padding-top: 10px;}
         .re-wrap{
             width: 70%;
             margin: 0 auto;
         }
-
-        h2{padding-top: 10px;}
-
         #re-info{
             text-align: center;
             font-weight: 700;
             box-sizing: border-box;
         }
-
         .prompt{
             float: left;
         }
-
         #rent {
             height: 38px; width: 200px;display: inline-block;
         }
         .rent{line-height: 40px;}
-
         .add{width: 700px; margin-bottom: 20px;}
         .add ul{width: 100px;  margin: 10px 10px 0 0;}
         .add li{float: left; height: 20px; width: 20px;background-image: url("../../img/star.png"); cursor: pointer;}
         .add ul+span{padding: 0 10px;}
-
         .add ul .on {
             background-position: 0 -28px;
         }
-
         .recommand label{
             margin: 0 10px;
         }
-
         #description{width: 300px;resize: none;display: inline-block;}
-
         .box1{float: left; margin-right: 50px;}
+        .box2{display: inline-block;}
         .box3{height: 86px;display: flex;
             align-items: center;}
-
         .warn{padding-left: 15px; color: red;}
-
-
     </style>
 </head>
 
@@ -114,21 +102,22 @@
                         <h5><span>Would you recommend this property?</span></h5>
                         <div class = "box1">
                             <label class="radio-inline">
-                                <input type="radio" name="optradio3" value="yes"><span>&emsp;Yes</span>
+                                <input type="radio" name="recommended" value="yes" onclick="clean()"><span>&emsp;Yes</span>
                             </label>
                         </div>
                         <div class = "box2">
                             <label class="radio-inline">
-                                <input type="radio" name="optradio3" value="no"><span>&emsp;No</span>
+                                <input type="radio" name="recommended" value="no" onclick="clean()"><span>&emsp;No</span>
                             </label>
                         </div>
+                        <span class = "warn recommend"></span>
                     </div>
 
                     <!--comment section-->
                     <div class = "add description">
                         <h5><label for="description">Comments:</label></h5>
                         <div class = "box3">
-                            <textarea class="form-control" id="description" rows="3" onchange="validDescription(this)"></textarea>
+                            <textarea class="form-control" name="body" id="description" rows="3" onchange="validDescription(this)"></textarea>
                             <span class = "warn description"></span>
                         </div>
                     </div>
@@ -149,7 +138,6 @@
                 mshowIndex = -1,
                 marrText = ["Please rate for the house maintenance","Awful","Bad","Hmmmm","Recommend","Perfect!"];
                 mlength = maLi.length;
-
             mUl.onmouseleave = function () {
                 mText.innerHTML = marrText[mshowIndex+1];
                 for(var m = 0; m < mlength; m++){
@@ -159,20 +147,16 @@
                     maLi[n].className = "on";
                 };
             };
-
             for(var i = 0; i < mlength; i++){
                 maLi[i].index = i;
-
                 maLi[i].onclick = function () {
                     mshowIndex = this.index;
                 };
-
                 maLi[i].onmouseenter = function () {
                     var ind = this.index;
                     for(var j = 0; j < mlength; j++){
                         maLi[j].className = "";
                     }
-
                     for(j = 0; j <= ind; j++){
                         maLi[j].className = "on";
                         mText.innerHTML = marrText[ind+1];
@@ -181,7 +165,6 @@
                     }
                 };
             }
-
             var loLi = document.querySelectorAll(".location ul li"),
                 loUl = document.querySelector(".location ul"),
                 loText = document.querySelector(".location ul+span"),
@@ -189,7 +172,6 @@
                 lshowIndex = -1,
                 larrText = ["Please rate for the house location","Awful","Bad","Hmmmm","Recommend","Perfect!"];
                 loength = loLi.length;
-
             loUl.onmouseleave = function () {
                 loText.innerHTML = larrText[lshowIndex+1];
                 for(var m = 0; m < loength; m++){
@@ -199,20 +181,16 @@
                     loLi[n].className = "on";
                 };
             };
-
             for(var i = 0; i < loength; i++){
                 loLi[i].index = i;
-
                 loLi[i].onclick = function () {
                     lshowIndex = this.index;
                 };
-
                 loLi[i].onmouseenter = function () {
                     var ind = this.index;
                     for(var j = 0; j < loength; j++){
                         loLi[j].className = "";
                     }
-
                     for(j = 0; j <= ind; j++){
                         loLi[j].className = "on";
                         loText.innerHTML = larrText[ind+1];
@@ -221,29 +199,27 @@
                     }
                 };
             }
-
             // var for rent  ---- id: rent
             // var for maintain ----- ma_score
             // var for location ------ lo_score
             // var for choice -------- var recommended = $("input[name='optradio3']:checked").val();
             // var for description --------- id: description
-
             var id = getUrlVars()['id'];
             var re_rent = document.getElementById("rent");
-            var re_recommended = $("input[name='optradio3']:checked").val();
+            var re_recommended = document.getElementsByName("recommended");
             var re_description = document.getElementById("description");
             var warn_rent = document.getElementsByClassName("warn")[0];
-            var warn_description = document.getElementsByClassName("warn")[1];
-
+            var warn_recommend = document.getElementsByClassName("warn")[1];
+            var warn_description = document.getElementsByClassName("warn")[2];
             function validAll() {
                 var vr = validRent(re_rent);
                 var vd = validDescription(re_description);
-                return vr && ma_score && lo_score && re_recommended && vd;
+                var vrecommend = checkSelect(re_recommended);
+                return vr && ma_score && lo_score && vrecommend && vd;
             }
-
             function validRent(obj) {
                 if(checkRent(obj)){
-                    warn_rent.innerText = "yes, it is a number";
+                    warn_rent.innerText = "";
                     return true;
                 }else if(checkBlank(obj)){
                     warn_rent.innerText = "Please do not leave this blank";
@@ -253,27 +229,37 @@
                     return false;
                 }
             }
-
             function validDescription(obj) {
                 if(checkBlank(obj)){
                     warn_description.innerText = "Please do not leave this blank";
                     return false;
                 }else{
+                    warn_description.innerText = "";
                     return true;
                 }
             }
-
+            // check if the ratio is selected
+            function checkSelect(obj){
+                for(var i=0;i<obj.length;i++){
+                    if(obj[i].checked){
+                        return true;
+                    }
+                }
+                warn_recommend.innerText = "Please make a choice";
+                return false;
+            }
+            function clean() {
+                warn_recommend.innerText = "";
+            }
             // check if the input is blank
             function checkBlank(obj){
                 return obj.value === "";
             }
-
             // check if the number is a number
             function checkRent(obj){
                 var numPattern = /^\d+$/;
                 return numPattern.test(obj.value);
             }
-
             
             function getUrlVars() {
                 var vars = {};
@@ -282,19 +268,25 @@
                 });
                 return vars;
             }
-
+            // var for maintain ----- ma_score
+            // var for location ------ lo_score
             $(document).ready(function(){
                 $("#reviewForm").submit(function(evt) {
+                    evt.preventDefault();
                     if(!validAll()){
                         console.log("Submit fail");
                         evt.preventDefault();
                     }else{
-                        console.log("Submit success");
-                        postReview(id, re_rent.value, ma_score, lo_score, re_recommended, re_description.value);
+                        console.log("recommended= " + $("input[name='recommended']:checked").val());
+                        var form = document.getElementById("reviewForm");
+                        var formData = new FormData(form);
+                        formData.append("maintenance", ma_score);
+                        formData.append("neighborhood", lo_score);
+                        formData.append("propertyID", id);
+                        ajaxPost('reviews.php/v2/add', formData, postReview);
                     }
                 });
             });
-
         </script>
 
     <!--<div id = footer></div>-->

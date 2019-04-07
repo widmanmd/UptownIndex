@@ -34,9 +34,18 @@ $search = ($isGet && $correctVersion && $containsParam && $call == "search");
 //PROCESS REQUEST
 if($allProp) {
     $output = selectAllProperties();
-} elseif($addProp) {
-    $body = (array) getJson();
-    $output = insertProperty($body);
+} elseif($addProp) { //New request uses xmlhttprequest without json
+    //$body = (array) getJson();
+    $body = &$_POST;
+    
+    $isValid = processFiles($_FILES);
+    if($isValid['status'] == 'OK') {
+        $body['photo'] = $isValid['photo'];
+        $output = insertProperty($body);
+    } else {
+        $output = $isValid;
+    }
+    
 } elseif($byId) {
     $id = $path[3];
     $output = selectPropertyById($id);
@@ -45,6 +54,7 @@ if($allProp) {
     $output = selectPropertiesByCategory($category);
 } elseif($search) {
     $query = $path[3];
+    $query = str_replace("+", " ", $query);
     file_put_contents("log2.txt", $query);
     $output = keywordSearch($query);
 } else {

@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<<<<<<< HEAD
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
-    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="../../styles/main.css"> 
-    <link rel="stylesheet" href="../../styles/header.css">
-    <link rel="stylesheet" href="../../styles/footer.css">
-
-=======
->>>>>>> 39edb88ac040517c3ef4c666d033405b622bada5
     <meta charset="UTF-8">
     <meta name="Keywords" content="Header">
     <meta name="Description" content="Header page">
@@ -30,7 +21,7 @@
         $(document).ready(function(){
             $("#searchButton").click(function(){
                 var key = $("#search").val();
-                var url = "../../forms/properties.html?query=" + key;
+                var url = "../../html/forms/properties.html?query=" + key;
                 window.location.href = url;
                 $("form").submit(function(e){
                     $("form").attr('action', url);
@@ -44,13 +35,13 @@
     <header class = "up-header">
         <div class = "up-container">
             <div class = "left-bar-logo fl">
-                <a href="http://localhost:8080/html/home/">Uptown Index</a>
+                <a href="../home/index.html">Uptown Index</a>
             </div>
             <div class = "right-bar-list fr">
                 <ul>
-                    <li><a href="javascript:void(0)">Houses</a></li>
-                    <li><a href="javascript:void(0)">Apartments</a></li>
-                    <li><a href="javascript:void(0)">Properties</a></li>
+                    <li><a href="../forms/properties.html?category=HOUSE">Houses</a></li>
+                    <li><a href="../forms/properties.html?category=APARTMENT">Apartments</a></li>
+                    <li><a href="../forms/properties.html">Properties</a></li>
                     <li><a href="javascript:void(0)">Login</a></li>
                     <li><a href="javascript:void(0)">Signup</a></li>
                 </ul>
