@@ -7,7 +7,7 @@
 */
 
 // --==HOST URL (CHANGE DEPENDING ON YOUR SETUP)==--
-var HOST = "http://localhost:8080/";
+var HOST = "http://uptownindex:8080/prototypev4/";
 
 //--AJAX CALLS
 
@@ -39,33 +39,40 @@ function fetchProperties(xhttp) {
         
         console.log("Hi");
         if (result.status == "OK") {
-            $(".propertyDiv").append($("<table/>").attr("id", "propertyTable"));
-            $("#propertyTable").attr("class", "table table-striped");
-    
+            $(".propertyDiv").append($("<div/>").attr("id", "propCards").attr("class", "container"));
+            //$("#propertyTable").attr("class", "table table-striped");
+            const rowSize = 4;
+            var currentRow;
             for (i = 0; i < result.properties.length; i++) {
-                name = result.properties[i].name;
-                address = result.properties[i].address;
-                if (name === "null") {
-                    name = address;
-
-                    $("#propertyTable").append(
-                        $("<tbody/>")
-                            .html("<tr><td>" + "<a href=\"" + HOST + "html/forms/listing.html?id=" + 
-                            result.properties[i].id + "\">" + name + "</a>" + "</td><td>" +
-                            "Bedrooms: " + result.properties[i].beds + "<br>" + "Bathrooms: " + result.properties[i].baths
-                            + "</td></tr>")
-                    );
+                //var prop = result.properties[i];
+                var name = result.properties[i].name;
+                if (name == null) {
+                    name = result.properties[i].address;
                 }
-                else {
-                    $("#propertyTable").append(
-                        $("<tbody/>")
-                            .html("<tr><td>" + "<a href=\"" + HOST + "html/forms/listing.html?id=" + 
-                            result.properties[i].id + "\">" + name + "</a>" + 
-                            "<br>" + address + "</td><td>" +
-                            "Bedrooms: " + result.properties[i].beds + "<br>" + "Bathrooms: " + result.properties[i].baths
-                            + "</td></tr>")
+                
+                
+                if(i%rowSize == 0) {
+                    currentRow = "propRow" + (i/rowSize);
+                    $("#propCards").append(
+                            $("<div/>").attr("id", currentRow ).attr("class", "row")
                     );
+                    
                 }
+                
+                var temp = "#" + currentRow;
+                $(temp).append(
+                        $("<div/>").attr("class", "col")
+                            .html("<div class=\"card\">" + 
+                            "<img class=\"card-img-top\" src=\"../../" + result.properties[i].photo + "\" height=\"200\">" + 
+                            "<div class=\"card-body\">" + 
+                            "<h5 class=\"card-title\">" + 
+                            "<a href=\"" + HOST + "html/forms/listing.html?id=" + result.properties[i].id + "\">" + name + "</a>" + 
+                            "</h5>" +
+                            "<p class=\"card-text\">" + "<b>Beds:</b> " + result.properties[i].beds +  
+                            " <b>Baths:</b> " + result.properties[i].baths + "</p>" +
+                            "</div>" +
+                            "</div>" )
+                    );
 
                 
             }
@@ -88,6 +95,10 @@ function fetchPropertyByID(xhttp) {
         $("#bathNum").append(result.baths);
         $("#description").append(result.description);
         $("#occupancy").append(result.occupancy);
+        $("#photo").attr("src", "../../" + result.photo);
+        $("#avgMain").html(result.avgMain);
+        $("#avgNeig").html(result.avgNeig);
+        $("#avgOverall").html(result.avgOverall);
     }
     else {
         console.log("Status: " + result.status + ", Msg: " + result.msg);
@@ -100,33 +111,37 @@ function fetchByKey(xhttp) {
 
         console.log(result);
         if (result.status == "OK") {
-            $(".propertyDiv").append($("<table/>").attr("id", "propertyTable"));
-            $("#propertyTable").attr("class", "table table-striped");
+            $(".propertyDiv").append($("<div/>").attr("id", "propCards").attr("class", "container"));
     
+            const rowSize = 4;
+            var currentRow;
             for (i = 0; i < result.properties.length; i++) {
-                name = result.properties[i].name;
-                address = result.properties[i].address;
-                if (name === "null") {
-                    name = address;
-
-                    $("#propertyTable").append(
-                        $("<tbody/>")
-                            .html("<tr><td>" + "<a href=\"" + HOST + "html/forms/listing.html?id=" + 
-                            result.properties[i].id + "\">" + name + "</a>" + "</td><td>" +
-                            "Bedrooms: " + result.properties[i].beds + "<br>" + "Bathrooms: " + result.properties[i].baths
-                            + "</td></tr>")
+                var name = result.properties[i].name;
+                if (name == null) {
+                    name = result.properties[i].address;
+                }
+                
+                if(i%rowSize == 0) {
+                    currentRow = "propRow" + (i/rowSize);
+                    $("#propCards").append(
+                            $("<div/>").attr("id", currentRow ).attr("class", "row")
                     );
                 }
-                else {
-                    $("#propertyTable").append(
-                        $("<tbody/>")
-                            .html("<tr><td>" + "<a href=\"" + HOST + "html/forms/listing.html?id=" + 
-                            result.properties[i].id + "\">" + name + "</a>" + 
-                            "<br>" + address + "</td><td>" +
-                            "Bedrooms: " + result.properties[i].beds + "<br>" + "Bathrooms: " + result.properties[i].baths
-                            + "</td></tr>")
+                
+                var temp = "#" + currentRow;
+                $(temp).append(
+                        $("<div/>").attr("class", "col")
+                            .html("<div class=\"card\">" + 
+                            "<img class=\"card-img-top\" src=\"../../" + result.properties[i].photo + "\" height=\"200\">" + 
+                            "<div class=\"card-body\">" + 
+                            "<h5 class=\"card-title\">" + 
+                            "<a href=\"" + HOST + "html/forms/listing.html?id=" + result.properties[i].id + "\">" + name + "</a>" + 
+                            "</h5>" +
+                            "<p class=\"card-text\">" + "<b>Beds:</b> " + result.properties[i].beds +  
+                            " <b>Baths:</b> " + result.properties[i].baths + "</p>" +
+                            "</div>" +
+                            "</div>" )
                     );
-                }
             }
         }
         else {
@@ -138,20 +153,39 @@ function fetchByKey(xhttp) {
 function fetchReviewsForProperty(xhttp) {
     var result = JSON.parse(xhttp.responseText);
 
+    
     console.log(result);
     if (result.status == "OK") {
 		console.log("done");
+        $("#ReviewListDiv").append($("<div/>").attr("id", "reviewCards").attr("class", "container"));
 		for(i = result.reviews.length - 1; i >= 0; i--) {
 			var main = result.reviews[i].maintenance;
 			var neig = result.reviews[i].neighborhood;
 			var rent = result.reviews[i].rent;
-			if(result.reviews[i].recommended == true) {
-				var rec = "Yes";
+			if(result.reviews[i].recommended == 1) {
+				var rec = "Recommended";
 			} else {
-				var rec = "No";
+				var rec = "Do Not Rcommend";
 			}
 			var body = result.reviews[i].body;
-			$("#ReviewListDiv").append(
+            $("#reviewCards").append(
+            "<div class=\"card-group\">" +
+            "<div class=\"card\" >" + 
+            "<div class=\"card-body\">" +
+            "<h5 class=\"card-title\">Maintenance: " + main + "</h5>" +
+            "<h5 class=\"card-title\">Neighborhood: " + neig + "</h5>" +
+            "</div></div>" +
+            "<div class=\"card\" style=\"flex-grow: 2;\">" +
+            "<div class=\"card-body\">" + 
+            "<h6 class=\"card-title\">Rent: " + rent + "</h6>" + 
+            "<h6 class=\"card-title\">" + rec + "</h6>" + 
+            "<p class=\"card-text\">" + body + "</p>" + 
+            "</div></div></div>"
+            );
+            
+            
+            
+			/* $("#ReviewListDiv").append(
 			"<div class=\"review-div mdl-grid\">" +
 				"<div class=\"mdl-cell mdl-cell--4-col\" style=\"border-style: solid; border-width: 5px;\">" + 
 					"<div style=\"padding: 5%\">" + 
@@ -165,7 +199,7 @@ function fetchReviewsForProperty(xhttp) {
 					"<h6>Comments: </h6><p class=\"bodyVal\">" + body + "</p>" +
 				"</div>" +
 			"</div>"
-			);
+			); */
 		}
     } else {
         console.log("Status: " + result.status + ", Msg: " + result.msg);
@@ -179,18 +213,37 @@ function fetchPropertiesByCategory(xhttp) {
     console.log(result);
 
     if (result.status == "OK") {
-        $(".propertyDiv").append($("<table/>").attr("id", "propertyTable"));
-        $("#propertyTable").attr("class", "table table-striped");
-
+        $(".propertyDiv").append($("<div/>").attr("id", "propCards").attr("class", "container"));
+        const rowSize = 4;
+        var currentRow;
+        
         for (i = 0; i < result.properties.length; i++) {
-            $("#propertyTable").append(
-                $("<tbody/>")
-                    .html("<tr><td>" + "<a href=\"" + HOST + "html/forms/listing.html?id=" + 
-                    result.properties[i].id + "\">" + result.properties[i].name + "</a>" + 
-                    "<br>" + result.properties[i].address + "</td><td>" +
-                     "Bedrooms: " + result.properties[i].beds + "<br>" + "Bathrooms: " + result.properties[i].baths
-                    + "</td></tr>")
-            );
+            var name = result.properties[i].name;
+                if (name == null) {
+                    name = result.properties[i].address;
+                }
+                
+                if(i%rowSize == 0) {
+                    currentRow = "propRow" + (i/rowSize);
+                    $("#propCards").append(
+                            $("<div/>").attr("id", currentRow ).attr("class", "row")
+                    );
+                }
+                
+                var temp = "#" + currentRow;
+                $(temp).append(
+                        $("<div/>").attr("class", "col")
+                            .html("<div class=\"card\">" + 
+                            "<img class=\"card-img-top\" src=\"../../" + result.properties[i].photo + "\" height=\"200\">" + 
+                            "<div class=\"card-body\">" + 
+                            "<h5 class=\"card-title\">" + 
+                            "<a href=\"" + HOST + "html/forms/listing.html?id=" + result.properties[i].id + "\">" + name + "</a>" + 
+                            "</h5>" +
+                            "<p class=\"card-text\">" + "<b>Beds:</b> " + result.properties[i].beds +  
+                            " <b>Baths:</b> " + result.properties[i].baths + "</p>" +
+                            "</div>" +
+                            "</div>" )
+                    );
         }
     }
     else {
@@ -213,33 +266,16 @@ function postProperty(xhttp) {
     }
 }
 
-/** postReview(id, rent, maintenance, location, recommended, comments)
-    AJAX call to send review information to the server. See REST-API-CALLS.txt for more
-        information.
-	@param integer id value
-	@param integer rent value, must not be negative or zero
-	@param integer maintenance value, must be between 1 and 5, inclusively.
-	@param integer location value, must be between 1 and 5, inclusively.
-	@param boolean recommended value
-	@param string body of review, must be fewer than 300 characters.
-*/
-function postReview(id, rent, maintenance, location, recommended, comments) {
-	console.log("postReview: id=" + id);
-    var obj = {propertyID: id, rent: rent, maintenance: maintenance, neighborhood: location, recommended: recommended, body: comments};
-    var objJSON = JSON.stringify(obj);
-
-    $.ajax( {
-        url: HOST + "reviews.php/v2/add",
-        type: "POST",
-        dataType: "JSON",
-        data: objJSON,
-        success: function(result) {
-			console.log("success!")
-			postReviewSuccess(result);
-		},
-        failure: function(xhr) {
-			ajaxFailure(xhr);
-		}
-    });
-
+function postReview(xhttp) {
+    console.log(xhttp.responseText);
+    var result = JSON.parse(xhttp.responseText);
+    console.log("response received");
+    
+    if(result.status == "OK") {
+        console.log("Review Posted");
+        alert("Review successfully posted!");
+    } else {
+        console.log("Error: status= " + result.status + ", msg= " + result.msg);
+        alert("FAILURE");
+    }
 }

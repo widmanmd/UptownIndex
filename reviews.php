@@ -33,7 +33,8 @@ if($reviewsForId) {
     $id = $path[3];
     $output = findReviewsById($id);
 } elseif($addReview) {
-    $body = (array) getJson();
+    $body = &$_POST;
+    //$body = (array) getJson();
     $output = insertReview($body);
 } else {
     $output = invalidCall();

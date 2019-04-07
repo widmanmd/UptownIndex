@@ -41,6 +41,37 @@
 
         #description{width: 400px;resize: none;display: inline-block;}
     </style>
+    
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $('.aptNumber').hide();
+        var appendCount = 0;
+        $("input[type='radio']").click(function(){
+            var radioValue = $("input[name='propertyType']:checked");
+            if(radioValue.length > 0){
+                if (radioValue.val() == "APARTMENT") {
+                    if (appendCount < 1) {
+                        $('.aptNumber').show();
+                    }
+                    
+                }
+                else {
+                    $('.aptNumber').hide();
+                    appendCount = 0;
+                }
+            }
+        });
+
+        $("#newHouseForm").submit( function(evt) {
+           evt.preventDefault();
+           
+            var form = document.getElementById("newHouseForm");
+            var FD = new FormData(form);
+            ajaxPost("properties.php/v2/add", FD, postProperty);
+        });
+        
+    });
+</script>
 </head>
 
 <body>
@@ -60,25 +91,37 @@
                         <span class = "warn address"></span>
                     </div>
                 </div>
+                
+                <div class="form-group">
+                        <label for="photo" style="float: left">Photo:</label>
+                        <input type="file" id="photoUpload" name="files[]" multiple>
+                    </div>
 
                 <div class="add apartment">
                     <h5><span>Is the property an apartment?</span></h5>
                     <div class = "box1">
                         <label class="radio-inline">
-                            <input type="radio" name="optradio3" value="yes"><span>&emsp;Yes</span>
+                            <input type="radio" name="propertyType" value="APARTMENT"><span>&emsp;Yes</span>
                         </label>
                     </div>
                     <div class = "box2">
                         <label class="radio-inline">
-                            <input type="radio" name="optradio3" value="no"><span>&emsp;No</span>
+                            <input type="radio" name="propertyType" value="HOUSE"><span>&emsp;No</span>
                         </label>
                     </div>
                 </div>
+                
+                <div class="aptNumber">
+                            <label for="apt_number" style="float: left";>Apartment #:</label>
+                            <input type="aptNum" class="form-control" id="aptNum" aria-describedby="aptNum" value="0"
+                            input name="apt_number" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                            <br>
+                    </div>
 
                 <div class = "add houseName">
                     <h5><label for="houseName">House Name:</label></h5>
                     <div>
-                        <input type="text" class = "form-control" id = "houseName" name = "houseName"  placeholder="# and street name">
+                        <input type="text" class = "form-control" id = "houseName" name = "name"  placeholder="# and street name">
                         <span class = "warn houseName"></span>
                     </div>
                 </div>
@@ -86,7 +129,7 @@
                 <div class = "add bedRoom">
                     <h5><label for="bedRoom"># of Bedrooms:</label></h5>
                     <div>
-                        <input type="text" class = "form-control" id = "bedRoom" name = "bedRoom"  placeholder="Please enter a numerical value">
+                        <input type="text" class = "form-control" id = "bedRoom" name = "beds"  placeholder="Please enter a numerical value">
                         <span class = "warn bedRoom"></span>
                     </div>
                 </div>
@@ -95,7 +138,7 @@
                 <div class = "add bathRoom">
                     <h5><label for="bedRoom"># of Bathrooms:</label></h5>
                     <div>
-                        <input type="text" class = "form-control" id = "bathRoom" name = "bathRoom"  placeholder="Please enter a numerical value">
+                        <input type="text" class = "form-control" id = "bathRoom" name = "baths"  placeholder="Please enter a numerical value">
                         <span class = "warn bathRoom"></span>
                     </div>
                 </div>
@@ -103,7 +146,7 @@
                 <div class = "add Tenants">
                     <h5><label for="tenants"># of Tenants:</label></h5>
                     <div>
-                        <input type="text" class = "form-control" id = "tenants" name = "tenants"  placeholder="Please enter a numerical value">
+                        <input type="text" class = "form-control" id = "tenants" name = "occupancy"  placeholder="Please enter a numerical value">
                         <span class = "warn tenants"></span>
                     </div>
                 </div>
@@ -111,7 +154,7 @@
                 <div class = "add description">
                     <h5><label for="description">Description:</label></h5>
                     <div class = "box3">
-                        <textarea class="form-control" id="description" rows="3"></textarea>
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
                         <span class = "warn description"></span>
                     </div>
                 </div>
