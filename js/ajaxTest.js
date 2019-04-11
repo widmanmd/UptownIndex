@@ -43,7 +43,7 @@ function fetchProperties(xhttp) {
             //$("#propertyTable").attr("class", "table table-striped");
             const rowSize = 4;
             var currentRow;
-            for (i = 0; i < result.properties.length - 1; i++) {
+            for (i = 0; i < result.properties.length; i++) {
                 //var prop = result.properties[i];
                 var name = result.properties[i].name;
                 if (name == null) {
