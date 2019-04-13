@@ -309,7 +309,7 @@ function keywordSearch($keyword){
     $keyword = strtoupper($keyword);    
     $keyword = strip_tags($keyword);    
     $keyword = trim($keyword); 
-    file_put_contents("log.txt", $keyword);
+    // file_put_contents("log.txt", $keyword);
     $sql = "SELECT * FROM property WHERE upper(name) LIKE ? OR upper(address) LIKE ?";
  
     $temp = '%'.$keyword.'%';

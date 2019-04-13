@@ -55,7 +55,7 @@ if($allProp) {
 } elseif($search) {
     $query = $path[3];
     $query = str_replace("+", " ", $query);
-    file_put_contents("log2.txt", $query);
+    // file_put_contents("log2.txt", $query);
     $output = keywordSearch($query);
 } else {
     $output = invalidCall();
