@@ -7,7 +7,7 @@
 */
 
 // --==HOST URL (CHANGE DEPENDING ON YOUR SETUP)==--
-var HOST = "http://uptownindex:8080/prototypev4/";
+var HOST = "http://localhost:8080/";
 
 //--AJAX CALLS
 
@@ -50,11 +50,10 @@ function fetchProperties(xhttp) {
                     name = result.properties[i].address;
                 }
                 
-                
-                if(i%rowSize == 0) {
+                if( i % rowSize == 0) {
                     currentRow = "propRow" + (i/rowSize);
                     $("#propCards").append(
-                            $("<div/>").attr("id", currentRow ).attr("class", "row")
+                            $("<div/>").attr("id", currentRow ).attr("class", "row no-gutters")
                     );
                     
                 }
@@ -62,16 +61,16 @@ function fetchProperties(xhttp) {
                 var temp = "#" + currentRow;
                 $(temp).append(
                         $("<div/>").attr("class", "col")
-                            .html("<div class=\"card\">" + 
+                            .html("<div class=\"card bg-light mb-3\" style=\"width: 18rem; height: 23rem\">" + 
                             "<img class=\"card-img-top\" src=\"../../" + result.properties[i].photo + "\" height=\"200\">" + 
                             "<div class=\"card-body\">" + 
                             "<h5 class=\"card-title\">" + 
                             "<a href=\"" + HOST + "html/forms/listing.html?id=" + result.properties[i].id + "\">" + name + "</a>" + 
                             "</h5>" +
                             "<p class=\"card-text\">" + "<b>Beds:</b> " + result.properties[i].beds +  
-                            " <b>Baths:</b> " + result.properties[i].baths + "</p>" +
+                            " <b>Baths:</b> " + result.properties[i].baths +"<br>" + "<b>Average rating:</b> " + result.properties[i].avgOverall + 
                             "</div>" +
-                            "</div>" )
+                            "</div>" + "<br>" )
                     );
 
                 
@@ -131,14 +130,14 @@ function fetchByKey(xhttp) {
                 var temp = "#" + currentRow;
                 $(temp).append(
                         $("<div/>").attr("class", "col")
-                            .html("<div class=\"card\">" + 
-                            "<img class=\"card-img-top\" src=\"../../" + result.properties[i].photo + "\" height=\"200\">" + 
+                        .html("<div class=\"card bg-light mb-3\" style=\"width: 18rem; height: 23rem\">" + 
+                        "<img class=\"card-img-top\" src=\"../../" + result.properties[i].photo + "\" height=\"200\">" + 
                             "<div class=\"card-body\">" + 
                             "<h5 class=\"card-title\">" + 
                             "<a href=\"" + HOST + "html/forms/listing.html?id=" + result.properties[i].id + "\">" + name + "</a>" + 
                             "</h5>" +
                             "<p class=\"card-text\">" + "<b>Beds:</b> " + result.properties[i].beds +  
-                            " <b>Baths:</b> " + result.properties[i].baths + "</p>" +
+                            " <b>Baths:</b> " + result.properties[i].baths +"<br>" + "<b>Average rating:</b> " + result.properties[i].avgOverall + 
                             "</div>" +
                             "</div>" )
                     );
@@ -233,16 +232,16 @@ function fetchPropertiesByCategory(xhttp) {
                 var temp = "#" + currentRow;
                 $(temp).append(
                         $("<div/>").attr("class", "col")
-                            .html("<div class=\"card\">" + 
-                            "<img class=\"card-img-top\" src=\"../../" + result.properties[i].photo + "\" height=\"200\">" + 
+                        .html("<div class=\"card bg-light mb-3\" style=\"width: 18rem; height: 23rem\">" + 
+                        "<img class=\"card-img-top\" src=\"../../" + result.properties[i].photo + "\" height=\"200\">" + 
                             "<div class=\"card-body\">" + 
                             "<h5 class=\"card-title\">" + 
                             "<a href=\"" + HOST + "html/forms/listing.html?id=" + result.properties[i].id + "\">" + name + "</a>" + 
                             "</h5>" +
                             "<p class=\"card-text\">" + "<b>Beds:</b> " + result.properties[i].beds +  
-                            " <b>Baths:</b> " + result.properties[i].baths + "</p>" +
+                            " <b>Baths:</b> " + result.properties[i].baths +"<br>" + "<b>Average rating:</b> " + result.properties[i].avgOverall + 
                             "</div>" +
-                            "</div>" )
+                            "</div>" + "<br>" )
                     );
         }
     }
@@ -260,6 +259,7 @@ function postProperty(xhttp) {
     if(result.status == "OK") {
         console.log("Property Posted");
         alert("Property successfully posted!");
+        window.location.href = 'properties.html';
     } else {
         console.log("Error: status= " + result.status + ", msg= " + result.msg);
         alert("FAILURE");
@@ -273,7 +273,11 @@ function postReview(xhttp) {
     
     if(result.status == "OK") {
         console.log("Review Posted");
-        alert("Review successfully posted!");
+        var idString = window.location.href; 
+        var id = idString[idString.length - 1];
+        alert("Review successfully posted!!");
+        window.location.href = 'listing.html?id=' + id;
+
     } else {
         console.log("Error: status= " + result.status + ", msg= " + result.msg);
         alert("FAILURE");
