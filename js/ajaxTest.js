@@ -43,7 +43,7 @@ function fetchProperties(xhttp) {
             //$("#propertyTable").attr("class", "table table-striped");
             const rowSize = 4;
             var currentRow;
-            for (i = 0; i < result.properties.length; i++) {
+            for (i = 0; i < result.properties.length - 1; i++) {
                 //var prop = result.properties[i];
                 var name = result.properties[i].name;
                 if (name == null) {
@@ -57,24 +57,44 @@ function fetchProperties(xhttp) {
                     );
                     
                 }
+                var score = result.properties[i].avgOverall;
+                if (score == 0.0) {
+                    score = "-";
+                }
                 
                 var temp = "#" + currentRow;
                 $(temp).append(
                         $("<div/>").attr("class", "col")
-                            .html("<div class=\"card bg-light mb-3\" style=\"width: 18rem; height: 23rem\">" + 
+                            .html("<div class=\"card bg-light mb-3\" style=\"width: 19rem; height: 23rem\">" + 
                             "<img class=\"card-img-top\" src=\"../../" + result.properties[i].photo + "\" height=\"200\">" + 
                             "<div class=\"card-body\">" + 
                             "<h5 class=\"card-title\">" + 
                             "<a href=\"" + HOST + "html/forms/listing.html?id=" + result.properties[i].id + "\">" + name + "</a>" + 
                             "</h5>" +
-                            "<p class=\"card-text\">" + "<b>Beds:</b> " + result.properties[i].beds +  
-                            " <b>Baths:</b> " + result.properties[i].baths +"<br>" + "<b>Average rating:</b> " + result.properties[i].avgOverall + 
+                            "<h4 class=\"scoreID\">" + score + " / 5" + "</h4>"
+                             + "<p class=\"card-text\">" + "<b>Beds: </b> " + result.properties[i].beds +  
+                            "<b> Baths:</b> " + result.properties[i].baths +"<br>" +
                             "</div>" +
-                            "</div>" + "<br>" )
+                            "</div>" + "<br>")
                     );
 
-                
+                    var elem = document.getElementsByClassName('scoreID')[i];
+                    if (score >= 4.0) {
+                        elem.style.color = "#7ad63e";
+
+                    }
+                    else if (score >= 3.0) {
+                        elem.style.color = "#edcf2a";
+                    }
+                    else if (score < 3.0) {
+                        elem.style.color = "#CA6573";
+                    }
+                    else {
+                        elem.style.color = "#b9c9a9";
+                    }
+                    
             }
+
         }
         else {
             console.log("Status: " + result.status + ", Msg: " + result.msg);
@@ -123,24 +143,44 @@ function fetchByKey(xhttp) {
                 if(i%rowSize == 0) {
                     currentRow = "propRow" + (i/rowSize);
                     $("#propCards").append(
-                            $("<div/>").attr("id", currentRow ).attr("class", "row")
+                            $("<div/>").attr("id", currentRow ).attr("class", "row no-gutters")
                     );
+                }
+                var score = result.properties[i].avgOverall;
+                if (score == 0.0) {
+                    score = "-";
                 }
                 
                 var temp = "#" + currentRow;
                 $(temp).append(
-                        $("<div/>").attr("class", "col")
-                        .html("<div class=\"card bg-light mb-3\" style=\"width: 18rem; height: 23rem\">" + 
+                    $("<div/>").attr("class", "col")
+                        .html("<div class=\"card bg-light mb-3\" style=\"width: 19rem; height: 23rem\">" + 
                         "<img class=\"card-img-top\" src=\"../../" + result.properties[i].photo + "\" height=\"200\">" + 
-                            "<div class=\"card-body\">" + 
-                            "<h5 class=\"card-title\">" + 
-                            "<a href=\"" + HOST + "html/forms/listing.html?id=" + result.properties[i].id + "\">" + name + "</a>" + 
-                            "</h5>" +
-                            "<p class=\"card-text\">" + "<b>Beds:</b> " + result.properties[i].beds +  
-                            " <b>Baths:</b> " + result.properties[i].baths +"<br>" + "<b>Average rating:</b> " + result.properties[i].avgOverall + 
-                            "</div>" +
-                            "</div>" )
-                    );
+                        "<div class=\"card-body\">" + 
+                        "<h5 class=\"card-title\">" + 
+                        "<a href=\"" + HOST + "html/forms/listing.html?id=" + result.properties[i].id + "\">" + name + "</a>" + 
+                        "</h5>" +
+                        "<h4 class=\"scoreID\">" + score + " / 5" + "</h4>"
+                         + "<p class=\"card-text\">" + "<b>Beds: </b> " + result.properties[i].beds +  
+                        "<b> Baths:</b> " + result.properties[i].baths +"<br>" +
+                        "</div>" +
+                        "</div>" + "<br>")
+                );
+
+                var elem = document.getElementsByClassName('scoreID')[i];
+                    if (score >= 4.0) {
+                        elem.style.color = "#7ad63e";
+
+                    }
+                    else if (score >= 3.0) {
+                        elem.style.color = "#edcf2a";
+                    }
+                    else if (score < 3.0) {
+                        elem.style.color = "#CA6573";
+                    }
+                    else {
+                        elem.style.color = "#b9c9a9";
+                    }
             }
         }
         else {
@@ -216,34 +256,59 @@ function fetchPropertiesByCategory(xhttp) {
         const rowSize = 4;
         var currentRow;
         
-        for (i = 0; i < result.properties.length; i++) {
+        for (i = 0; i < result.properties.length - 1; i++) {
+            //var prop = result.properties[i];
             var name = result.properties[i].name;
-                if (name == null) {
-                    name = result.properties[i].address;
-                }
+            if (name == null) {
+                name = result.properties[i].address;
+            }
+            
+            if( i % rowSize == 0) {
+                currentRow = "propRow" + (i/rowSize);
+                $("#propCards").append(
+                        $("<div/>").attr("id", currentRow ).attr("class", "row no-gutters")
+                );
                 
-                if(i%rowSize == 0) {
-                    currentRow = "propRow" + (i/rowSize);
-                    $("#propCards").append(
-                            $("<div/>").attr("id", currentRow ).attr("class", "row")
-                    );
-                }
-                
-                var temp = "#" + currentRow;
-                $(temp).append(
-                        $("<div/>").attr("class", "col")
-                        .html("<div class=\"card bg-light mb-3\" style=\"width: 18rem; height: 23rem\">" + 
+            }
+            var score = result.properties[i].avgOverall;
+            if (score == 0.0) {
+                score = "-";
+            }
+            
+            var temp = "#" + currentRow;
+            $(temp).append(
+                    $("<div/>").attr("class", "col")
+                        .html("<div class=\"card bg-light mb-3\" style=\"width: 19rem; height: 23rem\">" + 
                         "<img class=\"card-img-top\" src=\"../../" + result.properties[i].photo + "\" height=\"200\">" + 
-                            "<div class=\"card-body\">" + 
-                            "<h5 class=\"card-title\">" + 
-                            "<a href=\"" + HOST + "html/forms/listing.html?id=" + result.properties[i].id + "\">" + name + "</a>" + 
-                            "</h5>" +
-                            "<p class=\"card-text\">" + "<b>Beds:</b> " + result.properties[i].beds +  
-                            " <b>Baths:</b> " + result.properties[i].baths +"<br>" + "<b>Average rating:</b> " + result.properties[i].avgOverall + 
-                            "</div>" +
-                            "</div>" + "<br>" )
-                    );
+                        "<div class=\"card-body\">" + 
+                        "<h5 class=\"card-title\">" + 
+                        "<a href=\"" + HOST + "html/forms/listing.html?id=" + result.properties[i].id + "\">" + name + "</a>" + 
+                        "</h5>" +
+                        "<h4 class=\"scoreID\">" + score + " / 5" + "</h4>"
+                         + "<p class=\"card-text\">" + "<b>Beds: </b> " + result.properties[i].beds +  
+                        "<b> Baths:</b> " + result.properties[i].baths +"<br>" +
+                        "</div>" +
+                        "</div>" + "<br>")
+                );
+
+                var elem = document.getElementsByClassName('scoreID')[i];
+                if (score >= 4.0) {
+                    elem.style.color = "#7ad63e";
+
+                }
+                else if (score >= 3.0) {
+                    elem.style.color = "#edcf2a";
+                }
+                else if (score < 3.0) {
+                    elem.style.color = "#CA6573";
+                }
+                else {
+                    elem.style.color = "#b9c9a9";
+                }
+                
+            
         }
+
     }
     else {
         console.log("Status: " + result.status + ", Msg: " + result.msg);
