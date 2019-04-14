@@ -7,7 +7,7 @@
 */
 
 // --==HOST URL (CHANGE DEPENDING ON YOUR SETUP)==--
-var HOST = "http://localhost:8080/";
+var HOST = "http://uptownindex:8080/prototypev5/";
 
 //--AJAX CALLS
 
@@ -118,6 +118,13 @@ function fetchPropertyByID(xhttp) {
         $("#avgMain").html(result.avgMain);
         $("#avgNeig").html(result.avgNeig);
         $("#avgOverall").html(result.avgOverall);
+        
+        var maintenanceBarSize = (result.avgMain /5.0) * 100;
+        var neighborhoodBarSize = (result.avgNeig /5.0) * 100;
+        
+        $("#neighborhoodBar").attr("style", "width: " + neighborhoodBarSize + "%; background-color: green;");
+        $("#maintenanceBar").attr("style", "width: " + maintenanceBarSize + "%; background-color: #ec7e1e;");
+        
     }
     else {
         console.log("Status: " + result.status + ", Msg: " + result.msg);
@@ -192,54 +199,36 @@ function fetchByKey(xhttp) {
 function fetchReviewsForProperty(xhttp) {
     var result = JSON.parse(xhttp.responseText);
 
-    
     console.log(result);
     if (result.status == "OK") {
-		console.log("done");
-        $("#ReviewListDiv").append($("<div/>").attr("id", "reviewCards").attr("class", "container"));
-		for(i = result.reviews.length - 1; i >= 0; i--) {
-			var main = result.reviews[i].maintenance;
-			var neig = result.reviews[i].neighborhood;
-			var rent = result.reviews[i].rent;
-			if(result.reviews[i].recommended == 1) {
-				var rec = "Recommended";
-			} else {
-				var rec = "Do Not Rcommend";
-			}
-			var body = result.reviews[i].body;
-            $("#reviewCards").append(
-            "<div class=\"card-group\">" +
-            "<div class=\"card\" >" + 
-            "<div class=\"card-body\">" +
-            "<h5 class=\"card-title\">Maintenance: " + main + "</h5>" +
-            "<h5 class=\"card-title\">Neighborhood: " + neig + "</h5>" +
-            "</div></div>" +
-            "<div class=\"card\" style=\"flex-grow: 2;\">" +
-            "<div class=\"card-body\">" + 
-            "<h6 class=\"card-title\">Rent: " + rent + "</h6>" + 
-            "<h6 class=\"card-title\">" + rec + "</h6>" + 
-            "<p class=\"card-text\">" + body + "</p>" + 
-            "</div></div></div>"
+        console.log("done");
+        $("#ReviewListDiv").append($("<div/>"));
+        for(i = result.reviews.length - 1; i >= 0; i--) {
+            var main = result.reviews[i].maintenance;
+            var neig = result.reviews[i].neighborhood;
+            var rent = result.reviews[i].rent;
+            if(result.reviews[i].recommended == 1) {
+                var rec = "far fa-thumbs-up";
+                var sty = "color:green;";
+            } else {
+                var rec = "far fa-thumbs-down";
+                var sty = "color:red;";
+            }
+            var body = result.reviews[i].body;
+            $("#ReviewListDiv").append(
+            "<div class=\"card\">" +
+                "<div class=\"card-header\">" +
+                    "<div class=\"recommend\" >" + "<i class=\'" + rec + "\'" + "style =\'" + sty  +"\'>" + "</i>" + "</div>" + 
+                    "<div class=\"row-maintenance\">Maintenance: " + main + "</div>" +
+                    "<div class=\"row-neighborhood\">Neighborhood: " + neig + "</div>" +
+                    "<div class=\"row-rent\">Rent: " + rent + "$ per month" +"</div>" +
+                "</div>" +
+                "<div class=\"card-body\">" +
+                    "<p class=\"comment\">" + body + "</p>" + 
+                "</div>" + 
+            "</div>"
             );
-            
-            
-            
-			/* $("#ReviewListDiv").append(
-			"<div class=\"review-div mdl-grid\">" +
-				"<div class=\"mdl-cell mdl-cell--4-col\" style=\"border-style: solid; border-width: 5px;\">" + 
-					"<div style=\"padding: 5%\">" + 
-						"<h3 class=\"overall\">Overall Rating:  <b>5</b></h3>" + 
-						"<h3 class=\"maintenance\">Maintenance: <b>"+ main +"</b></h3>" + 
-						"<h3 class=\"neighborhood\">Neighborhood: <b>"+ neig +"</b></h3>" + 
-					"</div>" +
-				"</div>" + 
-				"<div class=\"mdl-cell mdl-cell--8-col\" style=\"border-style: solid; border-width: 5px;\">" + 
-					"<h5><b>Rent: " + rent + "</b></h5><p class=\"rentVal\"></p>  <h5><b>Recommended: " + rec + "</b></h5><p class=\"recVal\"></p>" +
-					"<h6>Comments: </h6><p class=\"bodyVal\">" + body + "</p>" +
-				"</div>" +
-			"</div>"
-			); */
-		}
+        }
     } else {
         console.log("Status: " + result.status + ", Msg: " + result.msg);
         alert("Unknown Error. Check console.");
