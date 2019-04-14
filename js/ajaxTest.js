@@ -7,7 +7,7 @@
 */
 
 // --==HOST URL (CHANGE DEPENDING ON YOUR SETUP)==--
-var HOST = "http://localhost:8080/";
+var HOST = "http://uptownindex:8080/prototypev5/";
 
 //--AJAX CALLS
 
@@ -16,27 +16,6 @@ function ajaxGet(url, callbackFunction) {
     xhttp.onreadystatechange = function() {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
             callbackFunction(this);
-        }
-    };
-    xhttp.open("GET", HOST + url, true);
-    xhttp.send();
-}
-
-function call(url, para){
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
-            var result = JSON.parse(xhttp.responseText);
-                console.log(result);
-                if (result.status == "OK") {
-                    $("#HouseName" + para).append(result.name)
-                    $("#bedNum" + para).append(result.beds);
-                    $("#bathNum" + para).append(result.baths);
-                }
-                else {
-                    console.log("Status: " + result.status + ", Msg: " + result.msg);
-                    alert("Unknown Error. Check console.");
-                }
         }
     };
     xhttp.open("GET", HOST + url, true);
@@ -64,39 +43,58 @@ function fetchProperties(xhttp) {
             //$("#propertyTable").attr("class", "table table-striped");
             const rowSize = 4;
             var currentRow;
-            for (i = 0; i < result.properties.length; i++) {
+            for (i = 0; i < result.properties.length - 1; i++) {
                 //var prop = result.properties[i];
                 var name = result.properties[i].name;
                 if (name == null) {
                     name = result.properties[i].address;
                 }
                 
-                
-                if(i%rowSize == 0) {
+                if( i % rowSize == 0) {
                     currentRow = "propRow" + (i/rowSize);
                     $("#propCards").append(
-                            $("<div/>").attr("id", currentRow ).attr("class", "row")
+                            $("<div/>").attr("id", currentRow ).attr("class", "row no-gutters")
                     );
                     
+                }
+                var score = result.properties[i].avgOverall;
+                if (score == 0.0) {
+                    score = "-";
                 }
                 
                 var temp = "#" + currentRow;
                 $(temp).append(
                         $("<div/>").attr("class", "col")
-                            .html("<div class=\"card\">" + 
+                            .html("<div class=\"card bg-light mb-3\" style=\"width: 19rem; height: 23rem\">" + 
                             "<img class=\"card-img-top\" src=\"../../" + result.properties[i].photo + "\" height=\"200\">" + 
                             "<div class=\"card-body\">" + 
                             "<h5 class=\"card-title\">" + 
                             "<a href=\"" + HOST + "html/forms/listing.html?id=" + result.properties[i].id + "\">" + name + "</a>" + 
                             "</h5>" +
-                            "<p class=\"card-text\">" + "<b>Beds:</b> " + result.properties[i].beds +  
-                            " <b>Baths:</b> " + result.properties[i].baths + "</p>" +
+                            "<h4 class=\"scoreID\">" + score + " / 5" + "</h4>"
+                             + "<p class=\"card-text\">" + "<b>Beds: </b> " + result.properties[i].beds +  
+                            "<b> Baths:</b> " + result.properties[i].baths +"<br>" +
                             "</div>" +
-                            "</div>" )
+                            "</div>" + "<br>")
                     );
 
-                
+                    var elem = document.getElementsByClassName('scoreID')[i];
+                    if (score >= 4.0) {
+                        elem.style.color = "#7ad63e";
+
+                    }
+                    else if (score >= 3.0) {
+                        elem.style.color = "#edcf2a";
+                    }
+                    else if (score < 3.0) {
+                        elem.style.color = "#CA6573";
+                    }
+                    else {
+                        elem.style.color = "#b9c9a9";
+                    }
+                    
             }
+
         }
         else {
             console.log("Status: " + result.status + ", Msg: " + result.msg);
@@ -120,6 +118,13 @@ function fetchPropertyByID(xhttp) {
         $("#avgMain").html(result.avgMain);
         $("#avgNeig").html(result.avgNeig);
         $("#avgOverall").html(result.avgOverall);
+        
+        var maintenanceBarSize = (result.avgMain /5.0) * 100;
+        var neighborhoodBarSize = (result.avgNeig /5.0) * 100;
+        
+        $("#neighborhoodBar").attr("style", "width: " + neighborhoodBarSize + "%; background-color: green;");
+        $("#maintenanceBar").attr("style", "width: " + maintenanceBarSize + "%; background-color: #ec7e1e;");
+        
     }
     else {
         console.log("Status: " + result.status + ", Msg: " + result.msg);
@@ -145,24 +150,44 @@ function fetchByKey(xhttp) {
                 if(i%rowSize == 0) {
                     currentRow = "propRow" + (i/rowSize);
                     $("#propCards").append(
-                            $("<div/>").attr("id", currentRow ).attr("class", "row")
+                            $("<div/>").attr("id", currentRow ).attr("class", "row no-gutters")
                     );
+                }
+                var score = result.properties[i].avgOverall;
+                if (score == 0.0) {
+                    score = "-";
                 }
                 
                 var temp = "#" + currentRow;
                 $(temp).append(
-                        $("<div/>").attr("class", "col")
-                            .html("<div class=\"card\">" + 
-                            "<img class=\"card-img-top\" src=\"../../" + result.properties[i].photo + "\" height=\"200\">" + 
-                            "<div class=\"card-body\">" + 
-                            "<h5 class=\"card-title\">" + 
-                            "<a href=\"" + HOST + "html/forms/listing.html?id=" + result.properties[i].id + "\">" + name + "</a>" + 
-                            "</h5>" +
-                            "<p class=\"card-text\">" + "<b>Beds:</b> " + result.properties[i].beds +  
-                            " <b>Baths:</b> " + result.properties[i].baths + "</p>" +
-                            "</div>" +
-                            "</div>" )
-                    );
+                    $("<div/>").attr("class", "col")
+                        .html("<div class=\"card bg-light mb-3\" style=\"width: 19rem; height: 23rem\">" + 
+                        "<img class=\"card-img-top\" src=\"../../" + result.properties[i].photo + "\" height=\"200\">" + 
+                        "<div class=\"card-body\">" + 
+                        "<h5 class=\"card-title\">" + 
+                        "<a href=\"" + HOST + "html/forms/listing.html?id=" + result.properties[i].id + "\">" + name + "</a>" + 
+                        "</h5>" +
+                        "<h4 class=\"scoreID\">" + score + " / 5" + "</h4>"
+                         + "<p class=\"card-text\">" + "<b>Beds: </b> " + result.properties[i].beds +  
+                        "<b> Baths:</b> " + result.properties[i].baths +"<br>" +
+                        "</div>" +
+                        "</div>" + "<br>")
+                );
+
+                var elem = document.getElementsByClassName('scoreID')[i];
+                    if (score >= 4.0) {
+                        elem.style.color = "#7ad63e";
+
+                    }
+                    else if (score >= 3.0) {
+                        elem.style.color = "#edcf2a";
+                    }
+                    else if (score < 3.0) {
+                        elem.style.color = "#CA6573";
+                    }
+                    else {
+                        elem.style.color = "#b9c9a9";
+                    }
             }
         }
         else {
@@ -174,23 +199,22 @@ function fetchByKey(xhttp) {
 function fetchReviewsForProperty(xhttp) {
     var result = JSON.parse(xhttp.responseText);
 
-    
     console.log(result);
     if (result.status == "OK") {
-		console.log("done");
+        console.log("done");
         $("#ReviewListDiv").append($("<div/>"));
-		for(i = result.reviews.length - 1; i >= 0; i--) {
-			var main = result.reviews[i].maintenance;
-			var neig = result.reviews[i].neighborhood;
-			var rent = result.reviews[i].rent;
-			if(result.reviews[i].recommended == 1) {
+        for(i = result.reviews.length - 1; i >= 0; i--) {
+            var main = result.reviews[i].maintenance;
+            var neig = result.reviews[i].neighborhood;
+            var rent = result.reviews[i].rent;
+            if(result.reviews[i].recommended == 1) {
                 var rec = "far fa-thumbs-up";
                 var sty = "color:green;";
-			} else {
+            } else {
                 var rec = "far fa-thumbs-down";
                 var sty = "color:red;";
-			}
-			var body = result.reviews[i].body;
+            }
+            var body = result.reviews[i].body;
             $("#ReviewListDiv").append(
             "<div class=\"card\">" +
                 "<div class=\"card-header\">" +
@@ -204,7 +228,7 @@ function fetchReviewsForProperty(xhttp) {
                 "</div>" + 
             "</div>"
             );
-		}
+        }
     } else {
         console.log("Status: " + result.status + ", Msg: " + result.msg);
         alert("Unknown Error. Check console.");
@@ -221,34 +245,59 @@ function fetchPropertiesByCategory(xhttp) {
         const rowSize = 4;
         var currentRow;
         
-        for (i = 0; i < result.properties.length; i++) {
+        for (i = 0; i < result.properties.length - 1; i++) {
+            //var prop = result.properties[i];
             var name = result.properties[i].name;
-                if (name == null) {
-                    name = result.properties[i].address;
+            if (name == null) {
+                name = result.properties[i].address;
+            }
+            
+            if( i % rowSize == 0) {
+                currentRow = "propRow" + (i/rowSize);
+                $("#propCards").append(
+                        $("<div/>").attr("id", currentRow ).attr("class", "row no-gutters")
+                );
+                
+            }
+            var score = result.properties[i].avgOverall;
+            if (score == 0.0) {
+                score = "-";
+            }
+            
+            var temp = "#" + currentRow;
+            $(temp).append(
+                    $("<div/>").attr("class", "col")
+                        .html("<div class=\"card bg-light mb-3\" style=\"width: 19rem; height: 23rem\">" + 
+                        "<img class=\"card-img-top\" src=\"../../" + result.properties[i].photo + "\" height=\"200\">" + 
+                        "<div class=\"card-body\">" + 
+                        "<h5 class=\"card-title\">" + 
+                        "<a href=\"" + HOST + "html/forms/listing.html?id=" + result.properties[i].id + "\">" + name + "</a>" + 
+                        "</h5>" +
+                        "<h4 class=\"scoreID\">" + score + " / 5" + "</h4>"
+                         + "<p class=\"card-text\">" + "<b>Beds: </b> " + result.properties[i].beds +  
+                        "<b> Baths:</b> " + result.properties[i].baths +"<br>" +
+                        "</div>" +
+                        "</div>" + "<br>")
+                );
+
+                var elem = document.getElementsByClassName('scoreID')[i];
+                if (score >= 4.0) {
+                    elem.style.color = "#7ad63e";
+
+                }
+                else if (score >= 3.0) {
+                    elem.style.color = "#edcf2a";
+                }
+                else if (score < 3.0) {
+                    elem.style.color = "#CA6573";
+                }
+                else {
+                    elem.style.color = "#b9c9a9";
                 }
                 
-                if(i%rowSize == 0) {
-                    currentRow = "propRow" + (i/rowSize);
-                    $("#propCards").append(
-                            $("<div/>").attr("id", currentRow ).attr("class", "row")
-                    );
-                }
-                
-                var temp = "#" + currentRow;
-                $(temp).append(
-                        $("<div/>").attr("class", "col")
-                            .html("<div class=\"card\">" + 
-                            "<img class=\"card-img-top\" src=\"../../" + result.properties[i].photo + "\" height=\"200\">" + 
-                            "<div class=\"card-body\">" + 
-                            "<h5 class=\"card-title\">" + 
-                            "<a href=\"" + HOST + "html/forms/listing.html?id=" + result.properties[i].id + "\">" + name + "</a>" + 
-                            "</h5>" +
-                            "<p class=\"card-text\">" + "<b>Beds:</b> " + result.properties[i].beds +  
-                            " <b>Baths:</b> " + result.properties[i].baths + "</p>" +
-                            "</div>" +
-                            "</div>" )
-                    );
+            
         }
+
     }
     else {
         console.log("Status: " + result.status + ", Msg: " + result.msg);
@@ -264,6 +313,7 @@ function postProperty(xhttp) {
     if(result.status == "OK") {
         console.log("Property Posted");
         alert("Property successfully posted!");
+        window.location.href = 'properties.html';
     } else {
         console.log("Error: status= " + result.status + ", msg= " + result.msg);
         alert("FAILURE");
@@ -277,7 +327,11 @@ function postReview(xhttp) {
     
     if(result.status == "OK") {
         console.log("Review Posted");
-        alert("Review successfully posted!");
+        var idString = window.location.href; 
+        var id = idString[idString.length - 1];
+        alert("Review successfully posted!!");
+        window.location.href = 'listing.html?id=' + id;
+
     } else {
         console.log("Error: status= " + result.status + ", msg= " + result.msg);
         alert("FAILURE");
