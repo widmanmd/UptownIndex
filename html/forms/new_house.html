@@ -35,6 +35,7 @@
             font-weight: 700;
             box-sizing: border-box;
         }
+        .warn{padding-left: 15px; color: red;}
 
         .add{margin-bottom: 20px;}
 
@@ -45,7 +46,7 @@
         #description{width: 400px;resize: none;display: inline-block;}
         #appartmentShow{display: none;};
 
-        .warn{padding-left: 15px; color: red;}
+        
 
         .box3{height: 86px;display: flex;
             align-items: center;}
@@ -77,16 +78,20 @@
 
                 <div class="add apartment">
                     <h5><span>Is the property an apartment?</span></h5>
-                    <div class = "box1">
+                    <div>
+                        <div class = "box1">
                         <label class="radio-inline">
                             <input type="radio" name="propertyType" value="yes" onclick="showApt()"><span>&emsp;Yes</span>
                         </label>
                     </div>
-                    <div class = "box2">
-                        <label class="radio-inline">
-                            <input type="radio" name="propertyType" value="no" onclick="hideApt()"><span>&emsp;No</span>
-                        </label>
+                        <div class = "box2">
+                            <label class="radio-inline">
+                                <input type="radio" name="propertyType" value="no" onclick="hideApt()"><span>&emsp;No</span>
+                            </label>
+                            <span class = "warn apt_boolean"></span>
+                        </div>
                     </div>
+                    
                 </div>
 
                 <div class = "add appartmentNum" id = "appartmentShow">
@@ -157,11 +162,12 @@
 
         var warn_address = document.getElementsByClassName("warn")[0];
         var warn_bool_app = document.getElementsByClassName("warn")[1];
-        var warn_houseName = document.getElementsByClassName("warn")[2];
-        var warn_bedRoom = document.getElementsByClassName("warn")[3];
-        var warn_bathRoom = document.getElementsByClassName("warn")[4];
-        var warn_tenant = document.getElementsByClassName("warn")[5];
-        var warn_description = document.getElementsByClassName("warn")[6];
+        var warn_app_num = document.getElementsByClassName("warn")[2];
+        var warn_houseName = document.getElementsByClassName("warn")[3];
+        var warn_bedRoom = document.getElementsByClassName("warn")[4];
+        var warn_bathRoom = document.getElementsByClassName("warn")[5];
+        var warn_tenant = document.getElementsByClassName("warn")[6];
+        var warn_description = document.getElementsByClassName("warn")[7];
 
         // check if the input is blank
         function checkBlank(obj){
@@ -202,7 +208,6 @@
         function validAddress(obj) {
             if(checkBlank(obj)){
                 warn_address.innerText = "Please do not leave this blank";
-                warn_address.style.color = "red";
                 return false;
             }else{
                 warn_address.innerText = "";
@@ -210,12 +215,22 @@
             }
         }
 
-        function validHouseName(obj){
+        function validAppartmentNum(obj){
             if(checkBlank(obj)){
-                warn_address.innerText = "Please do not leave this blank";
+                warn_app_num.innerText = "Please do not leave this blank";
                 return false;
             }else{
-                warn_address.innerText = "";
+                warn_app_num.innerText = "";
+                return true;
+            }
+        }
+
+        function validHouseName(obj){
+            if(checkBlank(obj)){
+                warn_houseName.innerText = "Please do not leave this blank";
+                return false;
+            }else{
+                warn_houseName.innerText = "";
                 return true;
             }
         }
@@ -272,11 +287,13 @@
         function validAll() {
             var va = validAddress(new_address);
             var vapp = checkSelect(new_bool_app);
+            var vh = validHouseName(new_houseName);
             var vBed = validBedRoom(new_bedRoom);
             var vBath = validBathRoom(new_bathRoom);
             var vt = validTenant(new_tenants);
             var vd = validDescription(new_description);
-            return va && vapp && vBed && vBath && vt &&vd;
+            var vappNum = validAppartmentNum(new_appartmentNum);
+            return va && vapp && vh && vappNum && vBed && vBath && vt &&vd;
         }
 
         function getUrlVars() {
