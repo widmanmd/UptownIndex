@@ -234,7 +234,7 @@ function insertReview($reviewArr) {
     $sql = "INSERT INTO review (recommended, rent, maintenance, neighborhood, body, propertyID) 
     VALUES (?,?,?,?,?,?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("iisssi", $recommended, $rent, $maintenance, $neighborhood, $body, $propertyID);
+    $stmt->bind_param("sisssi", $recommended, $rent, $maintenance, $neighborhood, $body, $propertyID);
 	$arr = array();
     if(!$stmt->execute()) {
         echo "FAILED TO INSERT REVIEW" . $stmt->error;
@@ -276,7 +276,7 @@ function addReview($recommended, $rent, $maintenance, $neighborhood, $body, $pro
     VALUES (?,?,?,?,?,?)";
 	$temp = (int) $propertyID;
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("iisssi", $recommended, $rent, $maintenance, $neighborhood, $body, $temp);
+    $stmt->bind_param("sisssi", $recommended, $rent, $maintenance, $neighborhood, $body, $temp);
 	$arr = array();
     if(!$stmt->execute()) {
         echo "FAILED TO INSERT REVIEW" . $stmt->error;

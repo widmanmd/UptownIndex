@@ -201,13 +201,15 @@ function fetchReviewsForProperty(xhttp) {
 
     console.log(result);
     if (result.status == "OK") {
+        
+        $("#totalReviews").html(result.reviews.length + " Total Reviews");
         console.log("done");
         $("#ReviewListDiv").append($("<div/>"));
         for(i = result.reviews.length - 1; i >= 0; i--) {
             var main = result.reviews[i].maintenance;
             var neig = result.reviews[i].neighborhood;
             var rent = result.reviews[i].rent;
-            if(result.reviews[i].recommended == 1) {
+            if(result.reviews[i].recommended === "Recommend") {
                 var rec = "far fa-thumbs-up";
                 var sty = "color:green;";
             } else {

@@ -19,7 +19,6 @@
         a{text-decoration: none;}
         ol,ul{list-style:none;}
         /*textarea{resize: none;}*/
-
         .newHouse-wrap{
             width: 70%;
             margin: 0 auto;
@@ -27,51 +26,22 @@
         .prompt{
             float: left;
         }
-
         h2{padding-top: 10px;}
-
         #newHouse-info{
             text-align: center;
             font-weight: 700;
             box-sizing: border-box;
         }
-
-        .add{width: 400px; margin-bottom: 20px;}
+        .warn{padding-left: 15px; color: red;}
+        .add{margin-bottom: 20px;}
+        .add .form-control{width: 400px; display: inline-block}
         .box1{float: left; margin-right: 50px;}
-
         #description{width: 400px;resize: none;display: inline-block;}
-    </style>
-    
-    <script type="text/javascript">
-    $(document).ready(function(){
-        $('.aptNumber').hide();
-        var appendCount = 0;
-        $("input[type='radio']").click(function(){
-            var radioValue = $("input[name='propertyType']:checked");
-            if(radioValue.length > 0){
-                if (radioValue.val() == "APARTMENT") {
-                    if (appendCount < 1) {
-                        $('.aptNumber').show();
-                    }
-                    
-                }
-                else {
-                    $('.aptNumber').hide();
-                    appendCount = 0;
-                }
-            }
-        });
-
-        $("#newHouseForm").submit( function(evt) {
-           evt.preventDefault();
-           
-            var form = document.getElementById("newHouseForm");
-            var FD = new FormData(form);
-            ajaxPost("properties.php/v2/add", FD, postProperty);
-        });
+        #appartmentShow{display: none;};
         
-    });
-</script>
+        .box3{height: 86px;display: flex;
+            align-items: center;}
+    </style>
 </head>
 
 <body>
@@ -87,41 +57,46 @@
                 <div class = "add address">
                     <h5><label for="address">Address:</label></h5>
                     <div>
-                        <input type="text" class = "form-control" id = "address" name = "address"  placeholder="# and street name">
+                        <input type="text" class = "form-control" id = "address" name = "address"  placeholder="# and street name" onchange="validAddress(this)">
                         <span class = "warn address"></span>
                     </div>
                 </div>
-                
+
                 <div class="form-group">
-                        <label for="photo" style="float: left">Photo:</label>
-                        <input type="file" id="photoUpload" name="files[]" multiple>
-                    </div>
+                    <label for="photo" style="float: left">Photo:</label>
+                    <input type="file" id="photoUpload" name="files[]">
+                </div>
 
                 <div class="add apartment">
                     <h5><span>Is the property an apartment?</span></h5>
-                    <div class = "box1">
+                    <div>
+                        <div class = "box1">
                         <label class="radio-inline">
-                            <input type="radio" name="propertyType" value="APARTMENT"><span>&emsp;Yes</span>
+                            <input type="radio" name="propertyType" value="yes" onclick="showApt()"><span>&emsp;Yes</span>
                         </label>
                     </div>
-                    <div class = "box2">
-                        <label class="radio-inline">
-                            <input type="radio" name="propertyType" value="HOUSE"><span>&emsp;No</span>
-                        </label>
+                        <div class = "box2">
+                            <label class="radio-inline">
+                                <input type="radio" name="propertyType" value="no" onclick="hideApt()"><span>&emsp;No</span>
+                            </label>
+                            <span class = "warn apt_boolean"></span>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div class = "add appartmentNum" id = "appartmentShow">
+                    <h5><label for="houseName">Appartment#:</label></h5>
+                    <div>
+                        <input type="text" class = "form-control" id = "appartmentNum" name = "apt_number"  placeholder="Appartment#" onchange="validHouseName(this)">
+                        <span class = "warn apt_number"></span>
                     </div>
                 </div>
-                
-                <div class="aptNumber">
-                            <label for="apt_number" style="float: left";>Apartment #:</label>
-                            <input type="aptNum" class="form-control" id="aptNum" aria-describedby="aptNum" value="0"
-                            input name="apt_number" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
-                            <br>
-                    </div>
 
                 <div class = "add houseName">
                     <h5><label for="houseName">House Name:</label></h5>
                     <div>
-                        <input type="text" class = "form-control" id = "houseName" name = "name"  placeholder="# and street name">
+                        <input type="text" class = "form-control" id = "houseName" name = "name"  placeholder="# and street name" onchange="validHouseName(this)">
                         <span class = "warn houseName"></span>
                     </div>
                 </div>
@@ -129,16 +104,15 @@
                 <div class = "add bedRoom">
                     <h5><label for="bedRoom"># of Bedrooms:</label></h5>
                     <div>
-                        <input type="text" class = "form-control" id = "bedRoom" name = "beds"  placeholder="Please enter a numerical value">
+                        <input type="text" class = "form-control" id = "bedRoom" name = "beds"  placeholder="Please enter a numerical value" onchange="validBedRoom(this)">
                         <span class = "warn bedRoom"></span>
                     </div>
                 </div>
 
-
                 <div class = "add bathRoom">
                     <h5><label for="bedRoom"># of Bathrooms:</label></h5>
                     <div>
-                        <input type="text" class = "form-control" id = "bathRoom" name = "baths"  placeholder="Please enter a numerical value">
+                        <input type="text" class = "form-control" id = "bathRoom" name = "baths"  placeholder="Please enter a numerical value" onchange="validBathRoom(this)">
                         <span class = "warn bathRoom"></span>
                     </div>
                 </div>
@@ -146,7 +120,7 @@
                 <div class = "add Tenants">
                     <h5><label for="tenants"># of Tenants:</label></h5>
                     <div>
-                        <input type="text" class = "form-control" id = "tenants" name = "occupancy"  placeholder="Please enter a numerical value">
+                        <input type="text" class = "form-control" id = "tenants" name = "occupancy"  placeholder="Please enter a numerical value" onchange="validTenant(this)">
                         <span class = "warn tenants"></span>
                     </div>
                 </div>
@@ -154,7 +128,7 @@
                 <div class = "add description">
                     <h5><label for="description">Description:</label></h5>
                     <div class = "box3">
-                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                        <textarea class="form-control" id="description" rows="3" name = "description" onchange="validDescription(this)"></textarea>
                         <span class = "warn description"></span>
                     </div>
                 </div>
@@ -165,6 +139,159 @@
             </div>
         </form>
     </div>
+
+    <script>
+        var new_address = document.getElementById("address");
+        var new_bool_app = document.getElementsByName("propertyType");
+        var new_houseName = document.getElementById("houseName");
+        var appartmentShow = document.getElementById("appartmentShow");
+        var new_appartmentNum = document.getElementById("appartmentNum"); 
+        var new_bedRoom = document.getElementById("bedRoom");
+        var new_bathRoom = document.getElementById("bathRoom");
+        var new_tenants = document.getElementById("tenants");
+        var new_description = document.getElementById("description");
+        var warn_address = document.getElementsByClassName("warn")[0];
+        var warn_bool_app = document.getElementsByClassName("warn")[1];
+        var warn_app_num = document.getElementsByClassName("warn")[2];
+        var warn_houseName = document.getElementsByClassName("warn")[3];
+        var warn_bedRoom = document.getElementsByClassName("warn")[4];
+        var warn_bathRoom = document.getElementsByClassName("warn")[5];
+        var warn_tenant = document.getElementsByClassName("warn")[6];
+        var warn_description = document.getElementsByClassName("warn")[7];
+        // check if the input is blank
+        function checkBlank(obj){
+            return obj.value === "";
+        }
+        // check if the number is a number
+        function checkNum(obj){
+            var numPattern = /^\d+$/;
+            return numPattern.test(obj.value);
+        }
+        // check if the ratio is selected
+        function checkSelect(obj){
+                for(var i=0;i<obj.length;i++){
+                    if(obj[i].checked){
+                        return true;
+                    }
+                }
+                warn_bool_app.innerText = "Please make a choice";
+                return false;
+            }
+        function clean() {
+            warn_bool_app.innerText = "";
+        }
+        function showApt(){
+            clean();
+            appartmentShow.style.display = "block";
+        }
+        function hideApt(){
+            clean();
+            appartmentShow.style.display = "none";
+        }
+        function validAddress(obj) {
+            if(checkBlank(obj)){
+                warn_address.innerText = "Please do not leave this blank";
+                return false;
+            }else{
+                warn_address.innerText = "";
+                return true;
+            }
+        }
+        function validAppartmentNum(obj){
+            if(checkBlank(obj)){
+                warn_app_num.innerText = "Please do not leave this blank";
+                return false;
+            }else{
+                warn_app_num.innerText = "";
+                return true;
+            }
+        }
+        function validHouseName(obj){
+            if(checkBlank(obj)){
+                warn_houseName.innerText = "Please do not leave this blank";
+                return false;
+            }else{
+                warn_houseName.innerText = "";
+                return true;
+            }
+        }
+        function validBedRoom(obj) {
+            if(checkNum(obj)){
+                warn_bedRoom.innerText = "";
+                return true;
+            }else if(checkBlank(obj)){
+                warn_bedRoom.innerText = "Please do not leave this blank";
+                return false;
+            }else{
+                warn_bedRoom.innerText = "Please enter a valid number";
+                return false;
+            }
+        }
+        function validBathRoom(obj) {
+            if(checkNum(obj)){
+                warn_bathRoom.innerText = "";
+                return true;
+            }else if(checkBlank(obj)){
+                warn_bathRoom.innerText = "Please do not leave this blank";
+                return false;
+            }else{
+                warn_bathRoom.innerText = "Please enter a valid number";
+                return false;
+            }
+        }
+        function validTenant(obj) {
+            if(checkNum(obj)){
+                warn_tenant.innerText = "";
+                return true;
+            }else if(checkBlank(obj)){
+                warn_tenant.innerText = "Please do not leave this blank";
+                return false;
+            }else{
+                warn_tenant.innerText = "Please enter a valid number";
+                return false;
+            }
+        }
+        function validDescription(obj) {
+            if(checkBlank(obj)){
+                warn_description.innerText = "Please do not leave this blank";
+                return false;
+            }else{
+                warn_description.innerText = "";
+                return true;
+            }
+        }
+        function validAll() {
+            var va = validAddress(new_address);
+            var vapp = checkSelect(new_bool_app);
+            var vh = validHouseName(new_houseName);
+            var vBed = validBedRoom(new_bedRoom);
+            var vBath = validBathRoom(new_bathRoom);
+            var vt = validTenant(new_tenants);
+            var vd = validDescription(new_description);
+            var vappNum = validAppartmentNum(new_appartmentNum);
+            return va && vapp && vh && vappNum && vBed && vBath && vt &&vd;
+        }
+        function getUrlVars() {
+                var vars = {};
+                var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+                    vars[key] = value;
+                });
+                return vars;
+            }
+         
+            $(document).ready(function(){
+                $("#newHouseForm").submit(function(evt) {
+                    evt.preventDefault();
+                    if(!validAll()){
+                        console.log("Submit fail");
+                        evt.preventDefault();
+                    }else{
+                        var form = document.getElementById("newHouseForm");
+                        var formData = new FormData(form);
+                        ajaxPost('properties.php/v2/add', formData, postProperty);
+                    }
+                });
+            });
+    </script>
 </body>
 </html>
-
