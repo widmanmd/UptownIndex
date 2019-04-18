@@ -26,6 +26,17 @@ function getJson()
 
 }
 
+//cleans user info to prevent XSS
+function cleanInput($array) {
+    foreach($array as $value) {
+        $value = trim($value);
+        $value = strip_tags(addslashes($value));
+        $value = htmlspecialchars($value);
+        $value = preg_replace('/<(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i', '', $value);
+    }
+    return $array;
+}
+
 //ERROR RESPONSE FUNCTION - INVALID PATH
 function invalidPath()
 {
