@@ -151,6 +151,7 @@
                 maLi[i].index = i;
                 maLi[i].onclick = function () {
                     mshowIndex = this.index;
+                    ma_score = mshowIndex + 1;
                 };
                 maLi[i].onmouseenter = function () {
                     var ind = this.index;
@@ -160,7 +161,7 @@
                     for(j = 0; j <= ind; j++){
                         maLi[j].className = "on";
                         mText.innerHTML = marrText[ind+1];
-                        ma_score = ind;
+                        //ma_score = ind;
                         console.log(ma_score+1);
                     }
                 };
@@ -185,6 +186,7 @@
                 loLi[i].index = i;
                 loLi[i].onclick = function () {
                     lshowIndex = this.index;
+                    lo_score = lshowIndex + 1;
                 };
                 loLi[i].onmouseenter = function () {
                     var ind = this.index;
@@ -194,7 +196,7 @@
                     for(j = 0; j <= ind; j++){
                         loLi[j].className = "on";
                         loText.innerHTML = larrText[ind+1];
-                        lo_score = ind;
+                        //lo_score = ind;
                         console.log(lo_score+1);
                     }
                 };

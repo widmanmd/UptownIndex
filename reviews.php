@@ -34,6 +34,7 @@ if($reviewsForId) {
     $output = findReviewsById($id);
 } elseif($addReview) {
     $body = &$_POST;
+    $body = cleanInput($body);
     //$body = (array) getJson();
     $output = insertReview($body);
 } else {

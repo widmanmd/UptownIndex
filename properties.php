@@ -37,7 +37,7 @@ if($allProp) {
 } elseif($addProp) { //New request uses xmlhttprequest without json
     //$body = (array) getJson();
     $body = &$_POST;
-    
+    $body = cleanInput($body);
     $isValid = processFiles($_FILES);
     if($isValid['status'] == 'OK') {
         $body['photo'] = $isValid['photo'];

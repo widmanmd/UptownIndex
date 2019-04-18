@@ -1,4 +1,4 @@
 $(function(){
-        $("#header").load("/prototypev5/html/home/header.html"); 
-        $("#footer").load("/prototypev5/html/home/footer.html"); }
+        $("#header").load("/html/home/header.html"); 
+        $("#footer").load("/html/home/footer.html"); }
 );

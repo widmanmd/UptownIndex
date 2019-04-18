@@ -7,7 +7,7 @@
 */
 
 // --==HOST URL (CHANGE DEPENDING ON YOUR SETUP)==--
-var HOST = "http://uptownindex:8080/prototypev5/";
+var HOST = "http://uptownindex:8080/";
 
 //--AJAX CALLS
 
@@ -33,8 +33,67 @@ function ajaxPost(url, data, callbackFunction) {
     xhttp.send(data);
 }
 
+function featuredProps() {
+    const prop1 = "3";
+    const prop2 = "2";
+    const prop3 = "1";
+    
+    var xhttp1 = new XMLHttpRequest();
+    xhttp1.onreadystatechange = function() {
+        if (xhttp1.readyState == 4 && xhttp1.status == 200) {
+            
+            var result = JSON.parse(xhttp1.responseText);
+            $("#Address1").append(result.address);
+            $("#HouseName1").append(result.name)
+            $("#bedNum1").append(result.beds);
+            $("#bathNum1").append(result.baths);
+        
+            $("#photo1").attr("src", "../../" + result.photo);
+        
+            //$("#avgOverall").html(result.avgOverall);
+        }
+    };
+    xhttp1.open("GET", HOST + "properties.php/v2/id/" + prop1, true);
+    xhttp1.send();
+    
+    var xhttp2 = new XMLHttpRequest();
+    xhttp2.onreadystatechange = function() {
+        if (xhttp2.readyState == 4 && xhttp2.status == 200) {
+            var result = JSON.parse(xhttp2.responseText);
+            $("#Address2").append(result.address);
+            $("#HouseName2").append(result.name)
+            $("#bedNum2").append(result.beds);
+            $("#bathNum2").append(result.baths);
+        
+            $("#photo2").attr("src", "../../" + result.photo);
+        
+            //$("#avgOverall").html(result.avgOverall);
+        }
+    };
+    xhttp2.open("GET", HOST + "properties.php/v2/id/" + prop2, true);
+    xhttp2.send();
+    
+    var xhttp3 = new XMLHttpRequest();
+    xhttp3.onreadystatechange = function() {
+        if (xhttp3.readyState == 4 && xhttp3.status == 200) {
+            var result = JSON.parse(xhttp3.responseText);
+            $("#Address3").append(result.address);
+            $("#HouseName3").append(result.name)
+            $("#bedNum3").append(result.beds);
+            $("#bathNum3").append(result.baths);
+        
+            $("#photo3").attr("src", "../../" + result.photo);
+        
+            //$("#avgOverall").html(result.avgOverall);
+        }
+    };
+    xhttp3.open("GET", HOST + "properties.php/v2/id/" + prop3, true);
+    xhttp3.send();
+}
+
 function fetchProperties(xhttp) {
     if (xhttp.readyState == 4 && xhttp.status == 200) {
+        console.log()
         var result = JSON.parse(xhttp.responseText);
         
         console.log("Hi");
@@ -98,7 +157,7 @@ function fetchProperties(xhttp) {
         }
         else {
             console.log("Status: " + result.status + ", Msg: " + result.msg);
-            alert("Unknown Error. Check console.");
+            alert("Uh oh! Something went wrong! Please try again.");
         }
     }
 }
@@ -115,20 +174,30 @@ function fetchPropertyByID(xhttp) {
         $("#description").append(result.description);
         $("#occupancy").append(result.occupancy);
         $("#photo").attr("src", "../../" + result.photo);
-        $("#avgMain").html(result.avgMain);
-        $("#avgNeig").html(result.avgNeig);
-        $("#avgOverall").html(result.avgOverall);
         
+        
+        var overall = result.avgOverall + "/5.0";
+        var neig = result.avgNeig + "/5.0";
+        var main = result.avgMain + "/5.0";
         var maintenanceBarSize = (result.avgMain /5.0) * 100;
         var neighborhoodBarSize = (result.avgNeig /5.0) * 100;
         
+        
+        if(result.avgOverall === "0.0") overall = "-/5.0";
+        if(result.avgMain === "0.0") main = "-/5.0";
+        if(result.avgNeig === "0.0") neig = "-/5.0";
+        
+        
+        $("#avgOverall").html(overall);
+        $("#avgMain").html(main);
+        $("#avgNeig").html(neig);
         $("#neighborhoodBar").attr("style", "width: " + neighborhoodBarSize + "%; background-color: green;");
         $("#maintenanceBar").attr("style", "width: " + maintenanceBarSize + "%; background-color: #ec7e1e;");
         
     }
     else {
         console.log("Status: " + result.status + ", Msg: " + result.msg);
-        alert("Unknown Error. Check console.");
+        alert("Uh oh! Something went wrong! Please try again.");
     }
 }
 
@@ -233,7 +302,9 @@ function fetchReviewsForProperty(xhttp) {
         }
     } else {
         console.log("Status: " + result.status + ", Msg: " + result.msg);
-        alert("Unknown Error. Check console.");
+        var noReviewsElement = "<p style=\"text-align: center\"/>";
+        var noReviewsMsg = "<b>There are no reviews for this property. Be the first to leave a review!</b>";
+        $("#ReviewListDiv").append($(noReviewsElement).html(noReviewsMsg));
     }
 }
 
@@ -303,7 +374,7 @@ function fetchPropertiesByCategory(xhttp) {
     }
     else {
         console.log("Status: " + result.status + ", Msg: " + result.msg);
-        alert("Unknown Error. Check console.");
+        alert("Uh oh! Something went wrong! Please try again.");
     }
 }
 
@@ -314,11 +385,11 @@ function postProperty(xhttp) {
     
     if(result.status == "OK") {
         console.log("Property Posted");
-        alert("Property successfully posted!");
+        alert("Thank you! Your property posting has been received!");
         window.location.href = 'properties.html';
     } else {
         console.log("Error: status= " + result.status + ", msg= " + result.msg);
-        alert("FAILURE");
+        alert("Uh oh! Something went wrong when submitting the property! Please try again.");
     }
 }
 
@@ -331,11 +402,11 @@ function postReview(xhttp) {
         console.log("Review Posted");
         var idString = window.location.href; 
         var id = idString[idString.length - 1];
-        alert("Review successfully posted!!");
+        alert("Thank you! Your review has been sucessfully posted!");
         window.location.href = 'listing.html?id=' + id;
 
     } else {
         console.log("Error: status= " + result.status + ", msg= " + result.msg);
-        alert("FAILURE");
+        alert("Uh oh! Something went wrong when posting your review! Please try again.");
     }
 }

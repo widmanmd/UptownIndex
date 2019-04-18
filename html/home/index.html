@@ -87,12 +87,13 @@
             margin: 0 auto;
         }
         .add{
+         display:inline-block;
           padding-left: 21px;
           width: 190px;
           height: 50px;
           font-size: 18px;
           font-weight: 300;
-          line-height: 50px;
+          line-height: 45px;
           border-radius: 25px;
           background-color:#3ea5ce;
           color:#fff;
@@ -163,9 +164,9 @@
     
             <div class = "index-feature">
                 <div class="card pro1" style="width: 14rem;">
-                        <a href="#"><img src="../../uploads/default.png" class="card-img-top" alt="..."></a>
+                        <a href="#"><img id="photo1" src="../../uploads/default.png" class="card-img-top" alt="..."></a>
                         <div class="card-body">
-                          <h5 class="card-title" id = "HouseName1"><span></span></h5>
+                          <h5 class="card-title" id = "Address1"><span></span></h5>
                           <p class="card-text">
                                 <h6 id="bedNum1"><span> Bedrooms: </span></h6>
                                 <h6 id="bathNum1"><span> Bathrooms:</span></h6>
@@ -174,9 +175,9 @@
                 </div>
 
                 <div class="card pro2" style="width: 14rem;">
-                        <a href="#"><img src="../../uploads/default.png" class="card-img-top" alt="..."></a>
+                        <a href="#"><img id="photo2" src="../../uploads/default.png" class="card-img-top" alt="..."></a>
                         <div class="card-body">
-                          <h5 class="card-title" id = "HouseName2"><span></span></h5>
+                          <h5 class="card-title" id = "Address2"><span></span></h5>
                           <p class="card-text">
                                 <h6 id="bedNum2"><span> Bedrooms: </span></h6>
                                 <h6 id="bathNum2"><span> Bathrooms:</span></h6>
@@ -185,9 +186,9 @@
                 </div>
 
                 <div class="card pro3" style="width: 14rem;">
-                        <a href="#"><img src="../../uploads/default.png" class="card-img-top" alt="..."></a>
+                        <a href="#"><img id="photo3" src="../../uploads/default.png" class="card-img-top" alt="..."></a>
                         <div class="card-body">
-                          <h5 class="card-title" id = "HouseName3"><span></span></h5>
+                          <h5 class="card-title" id = "Address3"><span></span></h5>
                           <p class="card-text">
                                 <h6 id="bedNum3"><span> Bedrooms: </span></h6>
                                 <h6 id="bathNum3"><span> Bathrooms:</span></h6>
@@ -196,12 +197,12 @@
                 </div>
 
                 <div class="card pro4" style="width: 14rem;">
-                  <a href="#"><img src="../../uploads/default.png" class="card-img-top" alt="..."></a>
+                  <a href="#"><img id="photo4" src="../../uploads/default.png" class="card-img-top" alt="..."></a>
                   <div class="card-body">
-                    <h5 class="card-title" id = "HouseName3"><span></span></h5>
+                    <h5 class="card-title" id = "HouseName4"><span></span></h5>
                     <p class="card-text">
-                          <h6 id="bedNum3"><span> Bedrooms: </span></h6>
-                          <h6 id="bathNum3"><span> Bathrooms:</span></h6>
+                          <h6 id="bedNum4"><span> Bedrooms: </span></h6>
+                          <h6 id="bathNum4"><span> Bathrooms:</span></h6>
                     </p>
                   </div>
           </div>
@@ -213,8 +214,9 @@
         <script type="text/javascript">
             $(document).ready(function(){
                 id = 3;
-                call("properties.php/v2/id/" + id, id);
-                document.getElementById("link").setAttribute("href","../forms/listing.html?id=" + id);
+                featuredProps();
+                //call("properties.php/v2/id/" + id, id);
+                //document.getElementById("link").setAttribute("href","../forms/listing.html?id=" + id);
             });
         </script>
 
