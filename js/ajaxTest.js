@@ -48,7 +48,7 @@ function featuredProps() {
             $("#bedNum1").append(result.beds);
             $("#bathNum1").append(result.baths);
         
-            $("#photo1").attr("src", "../../" + result.photo);
+            $("#photo1").attr("src", result.photo);
         
             //$("#avgOverall").html(result.avgOverall);
         }
@@ -65,7 +65,7 @@ function featuredProps() {
             $("#bedNum2").append(result.beds);
             $("#bathNum2").append(result.baths);
         
-            $("#photo2").attr("src", "../../" + result.photo);
+            $("#photo2").attr("src", result.photo);
         
             //$("#avgOverall").html(result.avgOverall);
         }
@@ -82,7 +82,7 @@ function featuredProps() {
             $("#bedNum3").append(result.beds);
             $("#bathNum3").append(result.baths);
         
-            $("#photo3").attr("src", "../../" + result.photo);
+            $("#photo3").attr("src", result.photo);
         
             //$("#avgOverall").html(result.avgOverall);
         }
@@ -125,7 +125,7 @@ function fetchProperties(xhttp) {
                 $(temp).append(
                         $("<div/>").attr("class", "col")
                             .html("<div class=\"card bg-light mb-3\" style=\"width: 19rem; height: 23rem\">" + 
-                            "<img class=\"card-img-top\" src=\"../../" + result.properties[i].photo + "\" height=\"200\">" + 
+                            "<img class=\"card-img-top\" src=\"" + result.properties[i].photo + "\" height=\"200\">" + 
                             "<div class=\"card-body\">" + 
                             "<h5 class=\"card-title\">" + 
                             "<a href=\"" + HOST + "html/forms/listing.html?id=" + result.properties[i].id + "\">" + name + "</a>" + 
@@ -167,13 +167,16 @@ function fetchPropertyByID(xhttp) {
 
     console.log(result);
     if (result.status == "OK") {
-        $("#Address").append(result.address);
-        $("#HouseName").append(result.name)
+        
+        $("#Address").append("<b>" + result.address + "</b>");
+        if(result.name != null) {
+            $("#HouseName").append("<b>" + result.name + "</b>");
+        }
         $("#bedNum").append(result.beds);
         $("#bathNum").append(result.baths);
         $("#description").append(result.description);
         $("#occupancy").append(result.occupancy);
-        $("#photo").attr("src", "../../" + result.photo);
+        $("#photo").attr("src", result.photo);
         
         
         var overall = result.avgOverall + "/5.0";
@@ -231,7 +234,7 @@ function fetchByKey(xhttp) {
                 $(temp).append(
                     $("<div/>").attr("class", "col")
                         .html("<div class=\"card bg-light mb-3\" style=\"width: 19rem; height: 23rem\">" + 
-                        "<img class=\"card-img-top\" src=\"../../" + result.properties[i].photo + "\" height=\"200\">" + 
+                        "<img class=\"card-img-top\" src=\"" + result.properties[i].photo + "\" height=\"200\">" + 
                         "<div class=\"card-body\">" + 
                         "<h5 class=\"card-title\">" + 
                         "<a href=\"" + HOST + "html/forms/listing.html?id=" + result.properties[i].id + "\">" + name + "</a>" + 
@@ -292,7 +295,7 @@ function fetchReviewsForProperty(xhttp) {
                     "<div class=\"recommend\" >" + "<i class=\'" + rec + "\'" + "style =\'" + sty  +"\'>" + "</i>" + "</div>" + 
                     "<div class=\"row-maintenance\">Maintenance: " + main + "</div>" +
                     "<div class=\"row-neighborhood\">Neighborhood: " + neig + "</div>" +
-                    "<div class=\"row-rent\">Rent: " + rent + "$ per month" +"</div>" +
+                    "<div class=\"row-rent\">Rent: $" + rent + " per month" +"</div>" +
                 "</div>" +
                 "<div class=\"card-body\">" +
                     "<p class=\"comment\">" + body + "</p>" + 
@@ -341,7 +344,7 @@ function fetchPropertiesByCategory(xhttp) {
             $(temp).append(
                     $("<div/>").attr("class", "col")
                         .html("<div class=\"card bg-light mb-3\" style=\"width: 19rem; height: 23rem\">" + 
-                        "<img class=\"card-img-top\" src=\"../../" + result.properties[i].photo + "\" height=\"200\">" + 
+                        "<img class=\"card-img-top\" src=\"" + result.properties[i].photo + "\" height=\"200\">" + 
                         "<div class=\"card-body\">" + 
                         "<h5 class=\"card-title\">" + 
                         "<a href=\"" + HOST + "html/forms/listing.html?id=" + result.properties[i].id + "\">" + name + "</a>" + 

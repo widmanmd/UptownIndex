@@ -3,13 +3,12 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
     integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="../../styles/review.css"> 
 	<link rel="stylesheet" href="../../styles/header.css">
 	<link rel="stylesheet" href="../../styles/footer.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
 	<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-    <!--<link rel="stylesheet" href="../../styles/main.css">-->
+    <link rel="stylesheet" href="../../styles/main.css">
 
 
     <meta charset="UTF-8">
@@ -36,12 +35,17 @@
     $( document ).ready(function() {
         if(query){
             console.log("keyword=" + query);
+            $("#propHeader").append($("<h1/>").html("<b>Showing results for: \"" + query + "\"</b>"));
             ajaxGet("properties.php/v2/search/" + query, fetchByKey);
             // fetchByKey(query);  
         } else if (cat) {
-            ajaxGet("properties.php/v2/by/" + cat, fetchPropertiesByCategory)
+            var temp = cat.toLowerCase();
+            temp = temp.charAt(0).toUpperCase() + temp.slice(1);
+            $("#propHeader").append($("<h1/>").html("<b>" + temp + "s:</b>"));
+            ajaxGet("properties.php/v2/by/" + cat, fetchPropertiesByCategory);
             //fetchPropertiesByCategory(cat);
         } else{
+            $("#propHeader").append($("<h1/>").html("<b>All Properties:</b>"));
             ajaxGet("properties.php/v2/all", fetchProperties); 
         }
     }); 
@@ -55,7 +59,11 @@
 <body>
 <div id="header"></div>
     <div id = "wrap" style = "margin-top:74px;">
-        <div class = "countMessage"></div>
+        <div style="margin-left: 10%;">
+            <div id="propHeader"></div>
+            <div class = "countMessage"></div>
+        </div>
+        
         <div class="propertyDiv"></div>
     </div>
     <div id="newProperty">
